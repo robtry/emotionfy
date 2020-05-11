@@ -1,39 +1,52 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+// own
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Page404 from './pages/Page404';
+//import HomePage from './pages/Home';
+import DefaultLayout from './containers/DefaultLayout';
+
+// context
+import UserContext from './context/userContext';
+
+// styles
 import './App.scss';
 
-const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
+const App = () => {
+	const [ isAuth, setIsAuth ] = useState(false);
 
-// Containers
-const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
+	const authenticateUser = (username, password) => {
+		//console.log('iniciando sesion: ', username, password);
+		setIsAuth(true);
+	};
 
-// Pages
-const Login = React.lazy(() => import('./views/Pages/Login'));
-const Register = React.lazy(() => import('./views/Pages/Register'));
-const Page404 = React.lazy(() => import('./views/Pages/Page404'));
-const Page500 = React.lazy(() => import('./views/Pages/Page500'));
+	const endSessionUser = (token) => {
+		console.log('terminando sesion', token);
+		setIsAuth(false);
+	};
 
-class App extends Component {
-	render() {
-		return (
+	return (
+		<UserContext.Provider
+			value={{
+				isAuth: isAuth,
+				authUser: authenticateUser,
+				logOut: endSessionUser
+			}}
+		>
 			<Router>
-				<React.Suspense fallback={loading()}>
-					<Switch>
-						<Route exact path="/login" name="Login Page" render={(props) => <Login {...props} />} />
-						<Route
-							exact
-							path="/register"
-							name="Register Page"
-							render={(props) => <Register {...props} />}
-						/>
-						<Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} />
-						<Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
-						<Route path="/" name="Home" render={(props) => <DefaultLayout {...props} />} />
-					</Switch>
-				</React.Suspense>
+				<Switch>
+					 <Route exact path="/login/" component={Login} />
+					 <Route exact path="/register" component={Register} />
+					{isAuth && <Route path="/" render={(props) => <DefaultLayout {...props} />} />}
+					{!isAuth && <Redirect from="/" to="/login" />}
+					<Route component={Page404} />
+
+					{/* <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} /> */}
+				</Switch>
 			</Router>
-		);
-	}
-}
+		</UserContext.Provider>
+	);
+};
 
 export default App;

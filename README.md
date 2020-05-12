@@ -44,6 +44,22 @@ Busca estar implementado dentro de una aplicación web con las siguientes caract
 
 ## Diseño de la arquitectura
 
+La arquitectura que utilizaremos es MERN (Mongo, Express, React y Nodejs). Acompañandola de Redis como auxiliar. Se ejecutara sobre contenedores Docker y utilizar Kubernetes como orquestador.
+
 ### Frontend
+
+En el frontend utilizaremos React. Se encargará de actualizar y renderizar de manera eficiente los componentes correctos cuando los datos cambien. Esta biblioteca es una de las más utilizadas en el mundo del desarrollo web y nos ayuda a entregar una mejor experiencia del usuario al trabajar con el modelo de Single Page Application (SPA).
+
 ### Backend
+
+En el backend utilizaremos Nodejs con Express. Con este framwork crearemos la API para poder acceder a los servicios de usuarios y videos analizados. Así mismo, a través de esta aplicación accederemos a la API de Amazon Rekognition para poder analizar los videos que queremos.
+
 ### Bases de datos
+
+#### Mongo
+
+Se guardaran los usuarios, y el contenido multimedia que suban. Además de los resultados obtenidos cada video o imagen. Específicamente los datos y estadísticas.
+
+#### Redis
+
+Usaremos esta base de datos para desacoplar nuestra arquitectura y brindar mayor redundancia y escalabilidad. Además de controlar las sesiones de usuarios.

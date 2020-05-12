@@ -1,4 +1,3 @@
-import React from 'react';
 import Home from './pages/Home';
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config

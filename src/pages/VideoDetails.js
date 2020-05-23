@@ -1,11 +1,19 @@
-import React, { lazy } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import React, { useRef } from 'react';
+import { Line } from 'react-chartjs-2';
 import { Card, CardBody, CardFooter, CardTitle, Col, Progress, Row } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
-//https://video-react.js.org/
-
-const Widget03 = lazy(() => import('../components/UI/Widget03'));
+import {
+	Player,
+	LoadingSpinner,
+	ControlBar,
+	CurrentTimeDisplay,
+	TimeDivider,
+	PlaybackRateMenuButton,
+	videoActions
+} from 'video-react'; // https://video-react.js.org/components/player/
+// own
+import WidgetChart from '../components/Video/WidgetChart';
 
 const brandPrimary = getStyle('--primary');
 const brandSuccess = getStyle('--success');
@@ -26,51 +34,6 @@ const cardChartData1 = {
 	]
 };
 
-const cardChartOpts1 = {
-	tooltips: {
-		enabled: false,
-		custom: CustomTooltips
-	},
-	maintainAspectRatio: false,
-	legend: {
-		display: false
-	},
-	scales: {
-		xAxes: [
-			{
-				gridLines: {
-					color: 'transparent',
-					zeroLineColor: 'transparent'
-				},
-				ticks: {
-					fontSize: 2,
-					fontColor: 'transparent'
-				}
-			}
-		],
-		yAxes: [
-			{
-				display: false,
-				ticks: {
-					display: false,
-					min: Math.min.apply(Math, cardChartData1.datasets[0].data) - 5,
-					max: Math.max.apply(Math, cardChartData1.datasets[0].data) + 5
-				}
-			}
-		]
-	},
-	elements: {
-		line: {
-			borderWidth: 1
-		},
-		point: {
-			radius: 4,
-			hitRadius: 10,
-			hoverRadius: 4
-		}
-	}
-};
-
 // Card Chart 2
 const cardChartData2 = {
 	labels: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July' ],
@@ -82,52 +45,6 @@ const cardChartData2 = {
 			data: [ 1, 18, 9, 17, 34, 22, 11 ]
 		}
 	]
-};
-
-const cardChartOpts2 = {
-	tooltips: {
-		enabled: false,
-		custom: CustomTooltips
-	},
-	maintainAspectRatio: false,
-	legend: {
-		display: false
-	},
-	scales: {
-		xAxes: [
-			{
-				gridLines: {
-					color: 'transparent',
-					zeroLineColor: 'transparent'
-				},
-				ticks: {
-					fontSize: 2,
-					fontColor: 'transparent'
-				}
-			}
-		],
-		yAxes: [
-			{
-				display: false,
-				ticks: {
-					display: false,
-					min: Math.min.apply(Math, cardChartData2.datasets[0].data) - 5,
-					max: Math.max.apply(Math, cardChartData2.datasets[0].data) + 5
-				}
-			}
-		]
-	},
-	elements: {
-		line: {
-			tension: 0.00001,
-			borderWidth: 1
-		},
-		point: {
-			radius: 4,
-			hitRadius: 10,
-			hoverRadius: 4
-		}
-	}
 };
 
 // Card Chart 3
@@ -143,39 +60,6 @@ const cardChartData3 = {
 	]
 };
 
-const cardChartOpts3 = {
-	tooltips: {
-		enabled: false,
-		custom: CustomTooltips
-	},
-	maintainAspectRatio: false,
-	legend: {
-		display: false
-	},
-	scales: {
-		xAxes: [
-			{
-				display: false
-			}
-		],
-		yAxes: [
-			{
-				display: false
-			}
-		]
-	},
-	elements: {
-		line: {
-			borderWidth: 2
-		},
-		point: {
-			radius: 0,
-			hitRadius: 10,
-			hoverRadius: 4
-		}
-	}
-};
-
 // Card Chart 4
 const cardChartData4 = {
 	labels: [ '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '' ],
@@ -189,30 +73,6 @@ const cardChartData4 = {
 	]
 };
 
-const cardChartOpts4 = {
-	tooltips: {
-		enabled: false,
-		custom: CustomTooltips
-	},
-	maintainAspectRatio: false,
-	legend: {
-		display: false
-	},
-	scales: {
-		xAxes: [
-			{
-				display: false,
-				barPercentage: 0.6
-			}
-		],
-		yAxes: [
-			{
-				display: false
-			}
-		]
-	}
-};
-
 // Social Box Chart
 const socialBoxData = [
 	{ data: [ 65, 59, 84, 84, 51, 55, 40 ], label: 'facebook' },
@@ -220,24 +80,6 @@ const socialBoxData = [
 	{ data: [ 78, 81, 80, 45, 34, 12, 40 ], label: 'linkedin' },
 	{ data: [ 35, 23, 56, 22, 97, 23, 64 ], label: 'google' }
 ];
-
-const makeSocialBoxData = (dataSetNo) => {
-	const dataset = socialBoxData[dataSetNo];
-	const data = {
-		labels: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July' ],
-		datasets: [
-			{
-				backgroundColor: 'rgba(255,255,255,.1)',
-				borderColor: 'rgba(255,255,255,.55)',
-				pointHoverBackgroundColor: '#fff',
-				borderWidth: 2,
-				data: dataset.data,
-				label: dataset.label
-			}
-		]
-	};
-	return () => data;
-};
 
 const socialChartOpts = {
 	tooltips: {
@@ -475,9 +317,12 @@ const mainChartOpts = {
 };
 
 const VideoDetails = () => {
+	const player = useRef();
+	//player.current.actions.seek(20)
+
 	return (
 		<div className="animated fadeIn">
-			<div style={{ marginTop: '50px' }} />
+			<div style={{ marginTop: '40px' }} />
 			<Row className="justify-content-center">
 				<span className="h1">Your video analisys</span>
 			</Row>
@@ -485,52 +330,41 @@ const VideoDetails = () => {
 			<div style={{ marginTop: '30px' }} />
 			<Row>
 				<Col xs="12" sm="6" lg="3">
-					<Card className="text-white bg-info">
-						<CardBody className="pb-0">
-						<div className="text-value">Members online</div>
-						</CardBody>
-						<div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-							<Line data={cardChartData2} options={cardChartOpts2} height={70} />
-						</div>
-					</Card>
+					<WidgetChart type="dotted" data={cardChartData2} title="Eyeglasses" />
 				</Col>
 
 				<Col xs="12" sm="6" lg="3">
-					<Card className="text-white bg-primary">
-						<CardBody className="pb-0">
-							<div className="text-value">9.823</div>
-							<div>Members online</div>
-						</CardBody>
-						<div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-							<Line data={cardChartData1} options={cardChartOpts1} height={70} />
-						</div>
-					</Card>
+					<WidgetChart type="dotted-curve" data={cardChartData1} title="Sunglasses" />
 				</Col>
 
 				<Col xs="12" sm="6" lg="3">
-					<Card className="text-white bg-warning">
-						<CardBody className="pb-0">
-							<div className="text-value">9.823</div>
-							<div>Members online</div>
-						</CardBody>
-						<div className="chart-wrapper" style={{ height: '70px' }}>
-							<Line data={cardChartData3} options={cardChartOpts3} height={70} />
-						</div>
-					</Card>
+					<WidgetChart type="continue" data={cardChartData3} title="Smile" />
 				</Col>
 
 				<Col xs="12" sm="6" lg="3">
-					<Card className="text-white bg-danger">
-						<CardBody className="pb-0">
-							<div className="text-value">9.823</div>
-							<div>Members online</div>
-						</CardBody>
-						<div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-							<Bar data={cardChartData4} options={cardChartOpts4} height={70} />
-						</div>
-					</Card>
+					<WidgetChart type="bars" data={cardChartData4} title="Beard" />
 				</Col>
 			</Row>
+
+			<Row>
+				<Player
+					ref={(ref) => (player.current = ref)}
+					fluid
+					muted
+					playsInline
+					//poster="/assets/poster.png"
+					src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+				>
+					<LoadingSpinner />
+					<ControlBar>
+						<CurrentTimeDisplay order={4.1} />
+						<TimeDivider order={4.2} />
+						<PlaybackRateMenuButton rates={[ , 2, 1, 0.5, 0.1 ]} order={7.1} />
+					</ControlBar>
+				</Player>
+			</Row>
+
+			<div style={{ marginTop: '40px' }} />
 			<Row>
 				<Col>
 					<Card>
@@ -608,6 +442,7 @@ const VideoDetails = () => {
 				</Col>
 			</Row>
 
+			{/* genders */}
 			<div className="progress-group">
 				<div className="progress-group-header">
 					<i className="icon-user progress-group-icon" />
@@ -626,31 +461,6 @@ const VideoDetails = () => {
 				</div>
 				<div className="progress-group-bars">
 					<Progress className="progress-xs" color="warning" value="37" />
-				</div>
-			</div>
-
-			<div className="progress-group">
-				<div className="progress-group-header">
-					<i className="icon-globe progress-group-icon" />
-					<span className="title">Organic Search</span>
-					<span className="ml-auto font-weight-bold">
-						191,235 <span className="text-muted small">(56%)</span>
-					</span>
-				</div>
-				<div className="progress-group-bars">
-					<Progress className="progress-xs" color="success" value="56" />
-				</div>
-			</div>
-			<div className="progress-group">
-				<div className="progress-group-header">
-					<i className="icon-social-facebook progress-group-icon" />
-					<span className="title">Facebook</span>
-					<span className="ml-auto font-weight-bold">
-						51,223 <span className="text-muted small">(15%)</span>
-					</span>
-				</div>
-				<div className="progress-group-bars">
-					<Progress className="progress-xs" color="success" value="15" />
 				</div>
 			</div>
 		</div>

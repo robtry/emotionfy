@@ -5,7 +5,7 @@
 	}
 }
 
-.little-logo{
+.little-logo {
 	@media screen and (max-width: 991px) {
 		display: block;
 	}
@@ -14,8 +14,14 @@
 	}
 }
 
-.little-searcher{
+.little-searcher {
 	@media screen and (max-width: 482px) {
 		display: none;
 	}
+}
+
+// emotion colors
+
+.bg-happy {
+	background-color: rgba(241, 196, 15, 1.0);
 }

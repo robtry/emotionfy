@@ -1,25 +1,35 @@
 import React, { useRef } from 'react';
-import { Line } from 'react-chartjs-2';
-import { Card, CardBody, CardFooter, CardTitle, Col, Progress, Row } from 'reactstrap';
+import { Line, Doughnut } from 'react-chartjs-2';
+import { Card, CardBody, CardFooter, Col, Progress, Row } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
+import { getStyle } from '@coreui/coreui/dist/js/coreui-utilities';
 import {
 	Player,
 	LoadingSpinner,
 	ControlBar,
 	CurrentTimeDisplay,
 	TimeDivider,
-	PlaybackRateMenuButton,
-	videoActions
+	PlaybackRateMenuButton
 } from 'video-react'; // https://video-react.js.org/components/player/
 // own
 import WidgetChart from '../components/Video/WidgetChart';
+import ProgressTag from '../components/Video/ProgressTag';
 
 const brandPrimary = getStyle('--primary');
 const brandSuccess = getStyle('--success');
 const brandInfo = getStyle('--info');
-const brandWarning = getStyle('--warning');
 const brandDanger = getStyle('--danger');
+
+const emotionColors = [
+	'rgba(241, 196, 15, 1.0)', //amarillo | happy
+	'rgba(243, 156, 18,1.0)', // naranja | suprised
+	'rgba(192, 57, 43,1.0)', //rojo | angry
+	'rgba(46, 204, 113,1.0)', //verde claro | confused
+	'rgba(127, 140, 141,1.0)', //gris | calm
+	'rgba(52, 152, 219,1.0)', //azul | sad
+	'rgba(155, 89, 182,1.0)', //morado | fear
+	'rgba(22, 160, 133,1.0)' //verde | disguted
+];
 
 // Card Chart 1
 const cardChartData1 = {
@@ -73,126 +83,16 @@ const cardChartData4 = {
 	]
 };
 
-// Social Box Chart
-const socialBoxData = [
-	{ data: [ 65, 59, 84, 84, 51, 55, 40 ], label: 'facebook' },
-	{ data: [ 1, 13, 9, 17, 34, 41, 38 ], label: 'twitter' },
-	{ data: [ 78, 81, 80, 45, 34, 12, 40 ], label: 'linkedin' },
-	{ data: [ 35, 23, 56, 22, 97, 23, 64 ], label: 'google' }
-];
-
-const socialChartOpts = {
-	tooltips: {
-		enabled: false,
-		custom: CustomTooltips
-	},
-	responsive: true,
-	maintainAspectRatio: false,
-	legend: {
-		display: false
-	},
-	scales: {
-		xAxes: [
-			{
-				display: false
-			}
-		],
-		yAxes: [
-			{
-				display: false
-			}
-		]
-	},
-	elements: {
-		point: {
-			radius: 0,
-			hitRadius: 10,
-			hoverRadius: 4,
-			hoverBorderWidth: 3
+const emotionsChart = {
+	labels: [ 'HAPPY', 'SURPRISED', 'ANGRY', 'CONFUSED', 'CALM', 'SAD', 'FEAR', 'DISGUSTED' ],
+	datasets: [
+		{
+			backgroundColor: emotionColors,
+			borderColor: 'rgba(255,255,255,.2)',
+			data: [ 20, 20, 20, 20, 20, 20, 20, 28 ]
 		}
-	}
+	]
 };
-
-// sparkline charts
-const sparkLineChartData = [
-	{
-		data: [ 35, 23, 56, 22, 97, 23, 64 ],
-		label: 'New Clients'
-	},
-	{
-		data: [ 65, 59, 84, 84, 51, 55, 40 ],
-		label: 'Recurring Clients'
-	},
-	{
-		data: [ 35, 23, 56, 22, 97, 23, 64 ],
-		label: 'Pageviews'
-	},
-	{
-		data: [ 65, 59, 84, 84, 51, 55, 40 ],
-		label: 'Organic'
-	},
-	{
-		data: [ 78, 81, 80, 45, 34, 12, 40 ],
-		label: 'CTR'
-	},
-	{
-		data: [ 1, 13, 9, 17, 34, 41, 38 ],
-		label: 'Bounce Rate'
-	}
-];
-
-const makeSparkLineData = (dataSetNo, variant) => {
-	const dataset = sparkLineChartData[dataSetNo];
-	const data = {
-		labels: [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ],
-		datasets: [
-			{
-				backgroundColor: 'transparent',
-				borderColor: variant ? variant : '#c2cfd6',
-				data: dataset.data,
-				label: dataset.label
-			}
-		]
-	};
-	return () => data;
-};
-
-const sparklineChartOpts = {
-	tooltips: {
-		enabled: false,
-		custom: CustomTooltips
-	},
-	responsive: true,
-	maintainAspectRatio: true,
-	scales: {
-		xAxes: [
-			{
-				display: false
-			}
-		],
-		yAxes: [
-			{
-				display: false
-			}
-		]
-	},
-	elements: {
-		line: {
-			borderWidth: 2
-		},
-		point: {
-			radius: 0,
-			hitRadius: 10,
-			hoverRadius: 4,
-			hoverBorderWidth: 3
-		}
-	},
-	legend: {
-		display: false
-	}
-};
-
-// Main Chart
 
 //Random Numbers
 function random(min, max) {
@@ -346,6 +246,29 @@ const VideoDetails = () => {
 				</Col>
 			</Row>
 
+			{/* ages */}
+			<div className="progress-group mb-5">
+				<div className="progress-group-header">
+					<i className="icon-arrow-down progress-group-icon" />
+					<span className="title">Min Age</span>
+					<span className="ml-auto font-weight-bold">12</span>
+				</div>
+				<div className="progress-group-bars">
+					<Progress className="progress-xs" color="dark" value="12" />
+				</div>
+			</div>
+			<div className="progress-group">
+				<div className="progress-group-header">
+					<i className="icon-arrow-up progress-group-icon" />
+					<span className="title">Max Age</span>
+					<span className="ml-auto font-weight-bold">43</span>
+				</div>
+				<div className="progress-group-bars">
+					<Progress className="progress-xs" color="dark" value="43" />
+				</div>
+			</div>
+
+			<div style={{ marginTop: '40px' }} />
 			<Row>
 				<Player
 					ref={(ref) => (player.current = ref)}
@@ -359,7 +282,7 @@ const VideoDetails = () => {
 					<ControlBar>
 						<CurrentTimeDisplay order={4.1} />
 						<TimeDivider order={4.2} />
-						<PlaybackRateMenuButton rates={[ , 2, 1, 0.5, 0.1 ]} order={7.1} />
+						<PlaybackRateMenuButton rates={[ 2, 1, 0.5, 0.1 ]} order={7.1} />
 					</ControlBar>
 				</Player>
 			</Row>
@@ -369,42 +292,6 @@ const VideoDetails = () => {
 				<Col>
 					<Card>
 						<CardBody>
-							<Row>
-								<Col sm="5">
-									<CardTitle className="mb-0">Traffic</CardTitle>
-									<div className="small text-muted">November 2015</div>
-								</Col>
-								<Col sm="7" className="d-none d-sm-inline-block">
-									{/* <Button color="primary" className="float-right">
-										<i className="icon-cloud-download" />
-									</Button> */}
-									{/* <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
-										<ButtonGroup className="mr-3" aria-label="First group">
-											<Button
-												color="outline-secondary"
-												onClick={() => this.onRadioBtnClick(1)}
-												active={this.state.radioSelected === 1}
-											>
-												Day
-											</Button>
-											<Button
-												color="outline-secondary"
-												onClick={() => this.onRadioBtnClick(2)}
-												active={this.state.radioSelected === 2}
-											>
-												Month
-											</Button>
-											<Button
-												color="outline-secondary"
-												onClick={() => this.onRadioBtnClick(3)}
-												active={this.state.radioSelected === 3}
-											>
-												Year
-											</Button>
-										</ButtonGroup>
-									</ButtonToolbar> */}
-								</Col>
-							</Row>
 							<div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
 								<Line data={mainChart} options={mainChartOpts} height={300} />
 							</div>
@@ -412,29 +299,28 @@ const VideoDetails = () => {
 						<CardFooter>
 							<Row className="text-center">
 								<Col sm={12} md className="mb-sm-2 mb-0">
-									<div className="text-muted">Visits</div>
-									<strong>29.703 Users (40%)</strong>
-									<Progress className="progress-xs mt-2" color="success" value="40" />
-								</Col>
-								<Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-									<div className="text-muted">Unique</div>
-									<strong>24.093 Users (20%)</strong>
-									<Progress className="progress-xs mt-2" color="info" value="20" />
+									<ProgressTag title="Happy" background={emotionColors[0]} value={100} />
 								</Col>
 								<Col sm={12} md className="mb-sm-2 mb-0">
-									<div className="text-muted">Pageviews</div>
-									<strong>78.706 Views (60%)</strong>
-									<Progress className="progress-xs mt-2" color="warning" value="60" />
+									<ProgressTag title="Surprised" background={emotionColors[1]} value={100} />
 								</Col>
 								<Col sm={12} md className="mb-sm-2 mb-0">
-									<div className="text-muted">New Users</div>
-									<strong>22.123 Users (80%)</strong>
-									<Progress className="progress-xs mt-2" color="danger" value="80" />
+									<ProgressTag title="Angry" background={emotionColors[2]} value={100} />
 								</Col>
-								<Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-									<div className="text-muted">Bounce Rate</div>
-									<strong>Average Rate (40.15%)</strong>
-									<Progress className="progress-xs mt-2" color="primary" value="40" />
+								<Col sm={12} md className="mb-sm-2 mb-0">
+									<ProgressTag title="Confused" background={emotionColors[3]} value={100} />
+								</Col>
+								<Col sm={12} md className="mb-sm-2 mb-0">
+									<ProgressTag title="Calm" background={emotionColors[4]} value={100} />
+								</Col>
+								<Col sm={12} md className="mb-sm-2 mb-0">
+									<ProgressTag title="Sad" background={emotionColors[5]} value={100} />
+								</Col>
+								<Col sm={12} md className="mb-sm-2 mb-0">
+									<ProgressTag title="Fear" background={emotionColors[6]} value={100} />
+								</Col>
+								<Col sm={12} md className="mb-sm-2 mb-0">
+									<ProgressTag title="Disgusted" background={emotionColors[7]} value={100} />
 								</Col>
 							</Row>
 						</CardFooter>
@@ -442,17 +328,9 @@ const VideoDetails = () => {
 				</Col>
 			</Row>
 
+			<Doughnut data={emotionsChart} />
+
 			{/* genders */}
-			<div className="progress-group">
-				<div className="progress-group-header">
-					<i className="icon-user progress-group-icon" />
-					<span className="title">Male</span>
-					<span className="ml-auto font-weight-bold">43%</span>
-				</div>
-				<div className="progress-group-bars">
-					<Progress className="progress-xs" color="warning" value="43" />
-				</div>
-			</div>
 			<div className="progress-group mb-5">
 				<div className="progress-group-header">
 					<i className="icon-user-female progress-group-icon" />
@@ -460,7 +338,17 @@ const VideoDetails = () => {
 					<span className="ml-auto font-weight-bold">37%</span>
 				</div>
 				<div className="progress-group-bars">
-					<Progress className="progress-xs" color="warning" value="37" />
+					<Progress className="progress-xs" color="dark" value="37" />
+				</div>
+			</div>
+			<div className="progress-group">
+				<div className="progress-group-header">
+					<i className="icon-user progress-group-icon" />
+					<span className="title">Male</span>
+					<span className="ml-auto font-weight-bold">43%</span>
+				</div>
+				<div className="progress-group-bars">
+					<Progress className="progress-xs" color="dark" value="43" />
 				</div>
 			</div>
 		</div>

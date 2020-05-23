@@ -12,11 +12,11 @@ import {
 	InputGroupText,
 	Input
 } from 'reactstrap';
-import { AppAsideToggler, AppNavbarBrand } from '@coreui/react';
+import { AppAsideToggler } from '@coreui/react';
 
 // own
 import logo from '../../assets/img/brand/logo.svg';
-import sygnet from '../../assets/img/brand/sygnet.svg';
+//import sygnet from '../../assets/img/brand/sygnet.svg';
 import defaultPicProfile from '../../assets/img/avatar/default.png';
 
 /** Top Navbar */
@@ -25,15 +25,23 @@ class DefaultHeader extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<AppNavbarBrand
-					full={{ src: logo, width: 150, height: 80, alt: 'Emotionfy Logo' }}
-					minimized={{ src: sygnet, width: 30, height: 30, alt: 'Emotionfy Logo' }}
-				/>
+				<div className="big-logo">
+					{/* <AppNavbarBrand
+						full={{ src: logo, width: 150, height: 80, alt: 'Emotionfy Logo' }}
+						minimized={{ src: sygnet, width: 30, height: 30, alt: 'Emotionfy Logo' }}
+					/> */}
+					<img src={logo} width={150} height={60} alt="logo" />
+				</div>
 
-				<Nav className="d-md-down-none" navbar>
+				<div className="little-logo">
+					<img src={logo} width={100} height={50} alt="logo" />
+				</div>
+
+				<Nav className="d-sm-down-none" navbar>
+					<NavItem />
 					<NavItem className="px-3">
 						<NavLink to="/" className="nav-link">
-							Home
+							<i className="fa fa-home" />&nbsp;&nbsp; Home
 						</NavLink>
 					</NavItem>
 					{/* <NavItem className="px-3">
@@ -42,17 +50,18 @@ class DefaultHeader extends Component {
 						</Link>
 					</NavItem> */}
 					{/* <i className="fa fa-usd" /> Payments<Badge color="secondary">42</Badge> */}
-					
 					<NavItem />
 					<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">42</Badge>
 				</Nav>
 				<Nav className="ml-auto" navbar>
-					<InputGroupAddon addonType="prepend">
-						<InputGroupText>
-							<i className="icon-magnifier" />
-						</InputGroupText>
-						<Input type="text" placeholder={'Search...'} />
-					</InputGroupAddon>
+					<div className="little-searcher">
+						<InputGroupAddon addonType="prepend">
+							<InputGroupText>
+								<i className="icon-magnifier" />
+							</InputGroupText>
+							<Input type="text" placeholder={'Search...'} />
+						</InputGroupAddon>
+					</div>
 					<NavItem />
 
 					<UncontrolledDropdown nav direction="down">

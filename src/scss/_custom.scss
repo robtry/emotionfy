@@ -1,1 +1,21 @@
-// Here you can add other styles
+// Custom styles
+.big-logo {
+	@media screen and (max-width: 991px) {
+		display: none;
+	}
+}
+
+.little-logo{
+	@media screen and (max-width: 991px) {
+		display: block;
+	}
+	@media screen and (min-width: 991px) {
+		display: none;
+	}
+}
+
+.little-searcher{
+	@media screen and (max-width: 482px) {
+		display: none;
+	}
+}

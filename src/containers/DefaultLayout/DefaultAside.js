@@ -2,7 +2,7 @@ import React from 'react';
 import { TabPane } from 'reactstrap';
 //import PropTypes from 'prop-types';
 
-/** Notificatinos */
+/** Notifications */
 
 const DefaultAside = () => {
 	return (

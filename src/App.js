@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 // own
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Page404 from './pages/Page404';
+
 //import HomePage from './pages/Home';
 import DefaultLayout from './containers/DefaultLayout';
 
@@ -14,7 +14,7 @@ import UserContext from './context/userContext';
 import './App.scss';
 
 const App = () => {
-	const [ isAuth, setIsAuth ] = useState(false);
+	const [ isAuth, setIsAuth ] = useState(true);
 
 	const authenticateUser = (username, password) => {
 		//console.log('iniciando sesion: ', username, password);
@@ -35,15 +35,14 @@ const App = () => {
 			}}
 		>
 			<Router>
-				<Switch>
-					 <Route exact path="/login/" component={Login} />
-					 <Route exact path="/register" component={Register} />
-					{isAuth && <Route path="/" render={(props) => <DefaultLayout {...props} />} />}
-					{!isAuth && <Redirect from="/" to="/login" />}
-					<Route component={Page404} />
-
-					{/* <Route exact path="/404" name="Page 404" render={(props) => <Page404 {...props} />} /> */}
-				</Switch>
+				<Router>
+					<Switch>
+						<Route exact path="/login/" component={Login} />
+						<Route exact path="/register" component={Register} />
+						{isAuth && <Route path="/" component={DefaultLayout} />}
+						{!isAuth && <Redirect from="/" to="/login" />}
+					</Switch>
+				</Router>
 			</Router>
 		</UserContext.Provider>
 	);

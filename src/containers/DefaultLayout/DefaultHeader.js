@@ -79,7 +79,7 @@ class DefaultHeader extends Component {
 							<DropdownItem>
 								<i className="fa fa-shield" /> Lock Account
 							</DropdownItem>
-							<DropdownItem onClick={(e) => this.props.onLogout(e)}>
+							<DropdownItem onClick={() => this.props.onLogout()}>
 								<i className="fa fa-lock" /> Logout
 							</DropdownItem>
 						</DropdownMenu>

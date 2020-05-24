@@ -1,7 +1,8 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import { AppAside, AppFooter, AppHeader /*AppBreadcrumb2 as AppBreadcrumb*/ } from '@coreui/react';
+import Loader from '../../components/Loader';
 
 // routes config
 import Home from '../../pages/Home';
@@ -12,19 +13,20 @@ import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
 
+//
+import userContext from '../../context/userContext';
+
 const DefaultLayout = (props) => {
 	//console.log('default layot props', props)
-	const loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>;
+	const loading = () => <Loader/>;
 
-	const signOut = (e) => {
-		e.preventDefault();
-		props.history.push('/login');
-	};
+	const signOut = useContext(userContext).logOut;
+
 
 	return (
 		<div className="app">
 			<AppHeader fixed>
-				<DefaultHeader onLogout={(e) => signOut(e)} />
+				<DefaultHeader onLogout={() => signOut()} />
 			</AppHeader>
 			<div className="app-body">
 				<main className="main">

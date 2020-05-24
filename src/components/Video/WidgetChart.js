@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card, CardBody } from 'reactstrap';
-import { Line, Bar } from 'react-chartjs-2';
+import { Line, Bar, defaults } from 'react-chartjs-2';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import PropTypes from 'prop-types';
+
+defaults.global.datasets.bar.barPercentage = 0.6; //solve bug for bar style
 
 const WidgetChart = (props) => {
 	//console.log('WidgetChart', props);
@@ -144,7 +146,7 @@ const WidgetChart = (props) => {
 			xAxes: [
 				{
 					display: false,
-					barPercentage: 0.6
+					//barPercentage: 0.6
 				}
 			],
 			yAxes: [

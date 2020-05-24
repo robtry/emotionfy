@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Line, Doughnut } from 'react-chartjs-2';
 import { Card, CardBody, CardFooter, Col, Progress, Row } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle } from '@coreui/coreui/dist/js/coreui-utilities';
 import {
 	Player,
 	LoadingSpinner,
@@ -14,14 +13,11 @@ import {
 // own
 import WidgetChart from '../components/Video/WidgetChart';
 import ProgressTag from '../components/Video/ProgressTag';
-
-const brandPrimary = getStyle('--primary');
-const brandSuccess = getStyle('--success');
-const brandInfo = getStyle('--info');
-const brandDanger = getStyle('--danger');
+import { AppSwitch } from '@coreui/react';
+import poster from '../assets/img/brand/sygnet.svg';
 
 const emotionColors = [
-	'rgba(241, 196, 15, 1.0)', //amarillo | happy
+	'rgba(241, 196, 15, 0.9)', //amarillo | happy
 	'rgba(243, 156, 18,1.0)', // naranja | suprised
 	'rgba(192, 57, 43,1.0)', //rojo | angry
 	'rgba(46, 204, 113,1.0)', //verde claro | confused
@@ -30,14 +26,13 @@ const emotionColors = [
 	'rgba(155, 89, 182,1.0)', //morado | fear
 	'rgba(22, 160, 133,1.0)' //verde | disguted
 ];
-
 // Card Chart 1
 const cardChartData1 = {
 	labels: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July' ],
 	datasets: [
 		{
 			label: 'My First dataset',
-			backgroundColor: brandPrimary,
+			backgroundColor: 'rgba(255,255,255,.2)',
 			borderColor: 'rgba(255,255,255,.55)',
 			data: [ 65, 59, 84, 84, 51, 55, 40 ]
 		}
@@ -50,7 +45,7 @@ const cardChartData2 = {
 	datasets: [
 		{
 			label: 'My First dataset',
-			backgroundColor: brandInfo,
+			backgroundColor: 'rgba(255,255,255,.2)',
 			borderColor: 'rgba(255,255,255,.55)',
 			data: [ 1, 18, 9, 17, 34, 22, 11 ]
 		}
@@ -99,73 +94,123 @@ function random(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-var elements = 27;
-var data1 = [];
-var data2 = [];
-var data3 = [];
+const elements = 27;
+const data1 = [];
+const data2 = [];
+const data3 = [];
+const data4 = [];
+const data5 = [];
+const data6 = [];
+const data7 = [];
+const data8 = [];
 
 for (var i = 0; i <= elements; i++) {
-	data1.push(random(50, 200));
-	data2.push(random(80, 100));
-	data3.push(65);
+	data1.push(random(50, 100));
+	data2.push(random(1, 90));
+	data3.push(random(65, 69));
+	data4.push(random(1, 10));
+	data5.push(random(0, 5));
+	data6.push(random(1, 100));
+	data7.push(random(4, 20));
+	data8.push(random(70, 80));
 }
 
-const mainChart = {
+const mainChartOutside = {
 	labels: [
-		'Mo',
-		'Tu',
-		'We',
-		'Th',
-		'Fr',
-		'Sa',
-		'Su',
-		'Mo',
-		'Tu',
-		'We',
-		'Th',
-		'Fr',
-		'Sa',
-		'Su',
-		'Mo',
-		'Tu',
-		'We',
-		'Th',
-		'Fr',
-		'Sa',
-		'Su',
-		'Mo',
-		'Tu',
-		'We',
-		'Th',
-		'Fr',
-		'Sa',
-		'Su'
+		'0',
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9',
+		'10',
+		'11',
+		'12',
+		'13',
+		'14',
+		'15',
+		'16',
+		'17',
+		'18',
+		'19',
+		'20',
+		'21',
+		'22',
+		'23',
+		'24',
+		'25',
+		'26',
+		'27'
 	],
 	datasets: [
 		{
-			label: 'My First dataset',
-			backgroundColor: 'rgba(0,0,0,0.1)', //hexToRgba(brandInfo, 10),
-			borderColor: brandInfo,
+			label: 'Happy',
+			backgroundColor: emotionColors[0], //hexToRgba(brandInfo, 10),
+			borderColor: emotionColors[0],
 			pointHoverBackgroundColor: '#fff',
 			borderWidth: 2,
 			data: data1
 		},
 		{
-			label: 'My Second dataset',
+			label: 'Surprised',
 			backgroundColor: 'transparent',
-			borderColor: brandSuccess,
+			borderColor: emotionColors[1],
 			pointHoverBackgroundColor: '#fff',
 			borderWidth: 2,
 			data: data2
 		},
 		{
-			label: 'My Third dataset',
+			label: 'Angry',
 			backgroundColor: 'transparent',
-			borderColor: brandDanger,
+			borderColor: emotionColors[2],
 			pointHoverBackgroundColor: '#fff',
 			borderWidth: 1,
 			borderDash: [ 8, 5 ],
 			data: data3
+		},
+		{
+			label: 'Confused',
+			backgroundColor: 'transparent',
+			borderColor: emotionColors[3],
+			pointHoverBackgroundColor: '#fff',
+			borderWidth: 2,
+			data: data4
+		},
+		{
+			label: 'Calm',
+			backgroundColor: 'transparent',
+			borderColor: emotionColors[4],
+			pointHoverBackgroundColor: '#fff',
+			borderWidth: 2,
+			data: data5
+		},
+		{
+			label: 'Sad',
+			backgroundColor: 'transparent',
+			borderColor: emotionColors[5],
+			pointHoverBackgroundColor: '#fff',
+			borderWidth: 2,
+			data: data6
+		},
+		{
+			label: 'Fear',
+			backgroundColor: 'transparent',
+			borderColor: emotionColors[6],
+			pointHoverBackgroundColor: '#fff',
+			borderWidth: 2,
+			data: data7
+		},
+		{
+			label: 'Disgusted',
+			backgroundColor: 'transparent',
+			borderColor: emotionColors[7],
+			pointHoverBackgroundColor: '#fff',
+			borderWidth: 2,
+			data: data8
 		}
 	]
 };
@@ -200,8 +245,8 @@ const mainChartOpts = {
 				ticks: {
 					beginAtZero: true,
 					maxTicksLimit: 5,
-					stepSize: Math.ceil(250 / 5),
-					max: 250
+					stepSize: Math.ceil(100 / 5)
+					//max: 100
 				}
 			}
 		]
@@ -217,8 +262,122 @@ const mainChartOpts = {
 };
 
 const VideoDetails = () => {
+	const [ mainChart, setMainChart ] = useState(mainChartOutside);
+
 	const player = useRef();
 	//player.current.actions.seek(20)
+
+	const [ showHappy, setShowHappy ] = useState(true);
+	const [ showSurprised, setShowSurprised ] = useState(true);
+	const [ showAngry, setShowAngry ] = useState(true);
+	const [ showConfused, setShowConfused ] = useState(true);
+	const [ showCalm, setShowCalm ] = useState(true);
+	const [ showSad, setShowSad ] = useState(true);
+	const [ showFear, setShowFear ] = useState(true);
+	const [ showDisgusted, setShowDisgusted ] = useState(true);
+
+	useEffect(
+		() => {
+			if (!showHappy) {
+				console.log('bye a happy');
+				setMainChart({
+					labels: [
+						'0',
+						'1',
+						'2',
+						'3',
+						'4',
+						'5',
+						'6',
+						'7',
+						'8',
+						'9',
+						'10',
+						'11',
+						'12',
+						'13',
+						'14',
+						'15',
+						'16',
+						'17',
+						'18',
+						'19',
+						'20',
+						'21',
+						'22',
+						'23',
+						'24',
+						'25',
+						'26',
+						'27'
+					],
+					datasets: [
+						{
+							label: 'Surprised',
+							backgroundColor: 'transparent',
+							borderColor: emotionColors[1],
+							pointHoverBackgroundColor: '#fff',
+							borderWidth: 2,
+							data: data2
+						},
+						{
+							label: 'Angry',
+							backgroundColor: 'transparent',
+							borderColor: emotionColors[2],
+							pointHoverBackgroundColor: '#fff',
+							borderWidth: 1,
+							borderDash: [ 8, 5 ],
+							data: data3
+						},
+						{
+							label: 'Confused',
+							backgroundColor: 'transparent',
+							borderColor: emotionColors[3],
+							pointHoverBackgroundColor: '#fff',
+							borderWidth: 2,
+							data: data4
+						},
+						{
+							label: 'Calm',
+							backgroundColor: 'transparent',
+							borderColor: emotionColors[4],
+							pointHoverBackgroundColor: '#fff',
+							borderWidth: 2,
+							data: data5
+						},
+						{
+							label: 'Sad',
+							backgroundColor: 'transparent',
+							borderColor: emotionColors[5],
+							pointHoverBackgroundColor: '#fff',
+							borderWidth: 2,
+							data: data6
+						},
+						{
+							label: 'Fear',
+							backgroundColor: 'transparent',
+							borderColor: emotionColors[6],
+							pointHoverBackgroundColor: '#fff',
+							borderWidth: 2,
+							data: data7
+						},
+						{
+							label: 'Disgusted',
+							backgroundColor: 'transparent',
+							borderColor: emotionColors[7],
+							pointHoverBackgroundColor: '#fff',
+							borderWidth: 2,
+							data: data8
+						}
+					]
+				});
+			} else {
+				console.log('dam again happy');
+				setMainChart(mainChartOutside);
+			}
+		},
+		[ showHappy ]
+	);
 
 	return (
 		<div className="animated fadeIn">
@@ -227,16 +386,15 @@ const VideoDetails = () => {
 				<span className="h1">Your video analisys</span>
 			</Row>
 
+			{/* general charts */}
 			<div style={{ marginTop: '30px' }} />
 			<Row>
 				<Col xs="12" sm="6" lg="3">
-					<WidgetChart type="dotted" data={cardChartData2} title="Eyeglasses" />
-				</Col>
-
-				<Col xs="12" sm="6" lg="3">
 					<WidgetChart type="dotted-curve" data={cardChartData1} title="Sunglasses" />
 				</Col>
-
+				<Col xs="12" sm="6" lg="3">
+					<WidgetChart type="dotted" data={cardChartData2} title="Eyeglasses" />
+				</Col>
 				<Col xs="12" sm="6" lg="3">
 					<WidgetChart type="continue" data={cardChartData3} title="Smile" />
 				</Col>
@@ -268,14 +426,16 @@ const VideoDetails = () => {
 				</div>
 			</div>
 
+			{/* video player */}
 			<div style={{ marginTop: '40px' }} />
-			<Row>
+			<Row className="justify-content-center">
 				<Player
 					ref={(ref) => (player.current = ref)}
-					fluid
+					height={400}
+					fluid={false} //to disable full height
 					muted
 					playsInline
-					//poster="/assets/poster.png"
+					poster={poster}
 					src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
 				>
 					<LoadingSpinner />
@@ -287,48 +447,145 @@ const VideoDetails = () => {
 				</Player>
 			</Row>
 
+			{/* main chart */}
 			<div style={{ marginTop: '40px' }} />
 			<Row>
 				<Col>
 					<Card>
 						<CardBody>
 							<div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-								<Line data={mainChart} options={mainChartOpts} height={300} />
+								<Line
+									redraw
+									data={mainChart}
+									options={mainChartOpts}
+									height={300}
+									getElementAtEvent={(e) => {
+										//console.log(e[0]._index); // index
+										if (e[0] && e[0]._index) {
+											player.current.actions.seek(e[0]._index);
+											player.current.actions.pause();
+										}
+									}}
+								/>
 							</div>
 						</CardBody>
-						<CardFooter>
-							<Row className="text-center">
-								<Col sm={12} md className="mb-sm-2 mb-0">
-									<ProgressTag title="Happy" background={emotionColors[0]} value={100} />
-								</Col>
-								<Col sm={12} md className="mb-sm-2 mb-0">
-									<ProgressTag title="Surprised" background={emotionColors[1]} value={100} />
-								</Col>
-								<Col sm={12} md className="mb-sm-2 mb-0">
-									<ProgressTag title="Angry" background={emotionColors[2]} value={100} />
-								</Col>
-								<Col sm={12} md className="mb-sm-2 mb-0">
-									<ProgressTag title="Confused" background={emotionColors[3]} value={100} />
-								</Col>
-								<Col sm={12} md className="mb-sm-2 mb-0">
-									<ProgressTag title="Calm" background={emotionColors[4]} value={100} />
-								</Col>
-								<Col sm={12} md className="mb-sm-2 mb-0">
-									<ProgressTag title="Sad" background={emotionColors[5]} value={100} />
-								</Col>
-								<Col sm={12} md className="mb-sm-2 mb-0">
-									<ProgressTag title="Fear" background={emotionColors[6]} value={100} />
-								</Col>
-								<Col sm={12} md className="mb-sm-2 mb-0">
-									<ProgressTag title="Disgusted" background={emotionColors[7]} value={100} />
-								</Col>
-							</Row>
-						</CardFooter>
 					</Card>
 				</Col>
 			</Row>
 
-			<Doughnut data={emotionsChart} />
+			{/* controls for main chart */}
+			<CardFooter>
+				<Row className="text-center">
+					<Col sm={12} md className="mb-sm-2 mb-0">
+						<AppSwitch
+							className={'mx-1'}
+							variant={'pill'}
+							color={'dark'}
+							outline={'alt'}
+							label
+							checked={showHappy}
+							onChange={() => setShowHappy((prev) => !prev)}
+						/>
+						<br />
+						<ProgressTag title="Happy" background={emotionColors[0]} value={100} />
+					</Col>
+					<Col sm={12} md className="mb-sm-2 mb-0">
+						<AppSwitch
+							className={'mx-1'}
+							variant={'pill'}
+							color={'dark'}
+							outline={'alt'}
+							label
+							checked={showSurprised}
+							onChange={() => setShowSurprised((prev) => !prev)}
+						/>
+						<br />
+						<ProgressTag title="Surprised" background={emotionColors[1]} value={100} />
+					</Col>
+					<Col sm={12} md className="mb-sm-2 mb-0">
+						<AppSwitch
+							className={'mx-1'}
+							variant={'pill'}
+							color={'dark'}
+							outline={'alt'}
+							label
+							checked={showAngry}
+							onChange={() => setShowAngry((prev) => !prev)}
+						/>
+						<br />
+						<ProgressTag title="Angry" background={emotionColors[2]} value={100} />
+					</Col>
+					<Col sm={12} md className="mb-sm-2 mb-0">
+						<AppSwitch
+							className={'mx-1'}
+							variant={'pill'}
+							color={'dark'}
+							outline={'alt'}
+							label
+							checked={showConfused}
+							onChange={() => setShowConfused((prev) => !prev)}
+						/>
+						<br />
+						<ProgressTag title="Confused" background={emotionColors[3]} value={100} />
+					</Col>
+					<Col sm={12} md className="mb-sm-2 mb-0">
+						<AppSwitch
+							className={'mx-1'}
+							variant={'pill'}
+							color={'dark'}
+							outline={'alt'}
+							label
+							checked={showCalm}
+							onChange={() => setShowCalm((prev) => !prev)}
+						/>
+						<br />
+						<ProgressTag title="Calm" background={emotionColors[4]} value={100} />
+					</Col>
+					<Col sm={12} md className="mb-sm-2 mb-0">
+						<AppSwitch
+							className={'mx-1'}
+							variant={'pill'}
+							color={'dark'}
+							outline={'alt'}
+							label
+							checked={showSad}
+							onChange={() => setShowSad((prev) => !prev)}
+						/>
+						<br />
+						<ProgressTag title="Sad" background={emotionColors[5]} value={100} />
+					</Col>
+					<Col sm={12} md className="mb-sm-2 mb-0">
+						<AppSwitch
+							className={'mx-1'}
+							variant={'pill'}
+							color={'dark'}
+							outline={'alt'}
+							label
+							checked={showFear}
+							onChange={() => setShowFear((prev) => !prev)}
+						/>
+						<br />
+						<ProgressTag title="Fear" background={emotionColors[6]} value={100} />
+					</Col>
+					<Col sm={12} md className="mb-sm-2 mb-0">
+						<AppSwitch
+							className={'mx-1'}
+							variant={'pill'}
+							color={'dark'}
+							outline={'alt'}
+							label
+							checked={showDisgusted}
+							onChange={() => setShowDisgusted((prev) => !prev)}
+						/>
+						<br />
+						<ProgressTag title="Disgusted" background={emotionColors[7]} value={100} />
+					</Col>
+				</Row>
+			</CardFooter>
+
+			{/* pie chart */}
+			<div style={{ marginTop: '20px' }} />
+			<Doughnut data={emotionsChart} legend={{ display: false }} />
 
 			{/* genders */}
 			<div className="progress-group mb-5">

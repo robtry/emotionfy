@@ -11,6 +11,7 @@ import ImageCard from '../components/UI/Widget03';
 */
 
 const Home = () => {
+
 	return (
 		<div className="animated fadeIn">
 			<div style={{ marginTop: '50px' }} />

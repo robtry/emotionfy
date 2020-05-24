@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 /**
  * Este es parte del videocard
@@ -26,7 +27,11 @@ const Widget03 = (props) => {
 					</div>
 				)}
 			</div>
-			<div className="text-muted card-footer">Título del file</div>
+			<div className="text-muted card-footer">
+				<NavLink to="media/5" exact>
+					Título del file
+				</NavLink>
+			</div>
 		</div>
 	);
 };

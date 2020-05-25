@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { FilePond } from 'react-filepond';
 import { Card, CardBody, CardHeader, Col, Row, Label, CustomInput, CardFooter, Button, Progress } from 'reactstrap';
 //import { AppSwitch } from '@coreui/react';
@@ -10,6 +10,9 @@ import axios from '../util/axios';
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css'; //https://pqina.nl/filepond/docs/patterns/frameworks/react/
 
+//context
+import userContext from '../context/userContext';
+
 /**
  * Este es el drag and drop
 */
@@ -20,7 +23,7 @@ const FileUploader = () => {
 	const [ files, setFiles ] = useState([]);
 	//const [ imgResult, setImageResult ] = useState();
 	// for budget
-	const [ duration, setDuration ] = useState(300); //-1
+	const [ duration, setDuration ] = useState(-1); //-1
 	const [ seconds, setSeconds ] = useState(1);
 	const [ budget, setBudget ] = useState(0);
 	/**
@@ -34,6 +37,7 @@ const FileUploader = () => {
 	 * complete | 6
 	*/
 	const [ status, setStatus ] = useState(0); //0
+	const [ idVideoTemp, setIdVideoTemp ] = useState('');
 
 	useEffect(
 		() => {
@@ -48,6 +52,8 @@ const FileUploader = () => {
 		console.log('FilePond instance has initialised', pond);
 	};
 
+	const userToken = useContext(userContext).token;
+
 	const processFile = (fieldName, file, metadata, load, error, progress, abort) => {
 		// FormData is a Web API that creates a HTML <form> element.
 		const formData = new FormData();
@@ -57,7 +63,10 @@ const FileUploader = () => {
      * The value is the file.
      * filename is reported to the server. Default filename is blob.
      */
-		formData.append('image', file, file.name);
+		formData.append('video', file, file.name.replace(/\s/g, ''));
+		formData.append('token', userToken);
+		//console.log('fd',formData);
+		//return;
 
 		//console.log('[FileUploader.js]',file);
 
@@ -72,12 +81,13 @@ const FileUploader = () => {
 		// const source = CancelToken.source();
 
 		// the request itself
+		//return;
 		axios({
 			//headers: getCsrfHeader().headers,
 			method: 'post',
-			url: 'imagen/clasificar',
+			url: '/videos',
 			data: formData,
-			responseType: 'arraybuffer',
+			//responseType: 'arraybuffer',
 			onUploadProgress: (e) => {
 				// updating progress indicator
 				progress(e.lengthComputable, e.loaded, e.total);
@@ -85,15 +95,13 @@ const FileUploader = () => {
 		})
 			.then((response) => {
 				// passing the file id to Filepond
-				//load(response.data.data.id);
 				console.log(response);
-				// const base64 = btoa(
-				// 	new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-				// );
-				// setImageResult('data:;base64,' + base64);
+				setIdVideoTemp(response.data.video_id);
+				setDuration(response.data.duration);
+				setStatus(1);
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log('Error uploading', err);
 			});
 
 		// Should expose an abort method so the request can be cancelled
@@ -104,6 +112,25 @@ const FileUploader = () => {
 				//source.cancel('Operation cancelled by the user.');
 			}
 		};
+	};
+
+	const acceptVideo = () => {
+		console.log('Accept');
+		axios
+			.post('/videos/' + idVideoTemp, { token: userToken, seconds: seconds })
+			.then((res) => {
+				//console.log(res);
+				setStatus(2);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const cancelVideo = () => {
+		setDuration(-1);
+		setStatus(0);
+		setFiles([]);
 	};
 
 	if (status === 0) {
@@ -138,29 +165,12 @@ const FileUploader = () => {
 									Analize each <b>{seconds}</b> seconds
 								</Col>
 								<Col xs={4}>
-									<Button
-										block
-										outline
-										color="success"
-										onClick={() => {
-											console.log('Accept');
-											setStatus(2);
-										}}
-									>
+									<Button block outline color="success" onClick={acceptVideo}>
 										Analyze
 									</Button>
 								</Col>
 								<Col xs={4}>
-									<Button
-										block
-										outline
-										color="danger"
-										onClick={() => {
-											setDuration(-1);
-											setStatus(0);
-											setFiles([]);
-										}}
-									>
+									<Button block outline color="danger" onClick={cancelVideo}>
 										Cancel
 									</Button>
 								</Col>

@@ -4,11 +4,12 @@ export default React.createContext({
 	isAuth: false,
 	token: '',
 	refreshToken: '',
-	user_id: '',
 	errorInAuth: false,
+	isLoading: false, //when authing
+	isRefreshing: false,
+	refreshSession: () => {},
 	clearError: () => {},
-	isLoading: false,
 	logIn: (email, password) => {},
 	singUp: (email, password) => {},
-	logOut: token => {},
+	logOut: (token) => {}
 });

@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Row, Col } from 'reactstrap';
-
 //owns
 import VideoCard from '../components/VideoCard';
 import FileUploader from '../components/FileUploader';
-import ImageCard from '../components/UI/Widget03';
+//import ImageCard from '../components/UI/Widget03';
+import Loader from '../components/Loader';
+import { useFetch } from '../util/useFetch';
+//context
+import userContext from '../context/userContext';
 
 /**
  * Cuando el usuario ya inicio sesión
 */
 
 const Home = () => {
+	const userToken = useContext(userContext).token;
+	const { data, isLoading /*loadData, searchByName, isSearching*/} = useFetch('/videos/' + userToken);
+
+	// 	.get('/videos/' + userToken + '/' + '"5ecb54b1849de04dd16ba634"')
 
 	return (
 		<div className="animated fadeIn">
@@ -30,14 +37,20 @@ const Home = () => {
 				<span className="h1">Your Projects</span>
 			</Row>
 			<div style={{ marginTop: '20px' }} />
-			<Row>
-				<Col xs={12} sm={6} md={3}>
-					<VideoCard />
-				</Col>
-				<Col xs={12} sm={6} md={3}>
-					<ImageCard faces={1} />
-				</Col>
-			</Row>
+			{isLoading ? (
+				<Loader />
+			) : (
+				<Row>
+					{data.map((item) => (
+						<Col xs={12} sm={6} md={3} key={item._id} >
+							<VideoCard item={item} />
+						</Col>
+					))}
+					{/* <Col xs={12} sm={6} md={3}>
+						<ImageCard faces={1} />
+					</Col> */}
+				</Row>
+			)}
 		</div>
 	);
 };

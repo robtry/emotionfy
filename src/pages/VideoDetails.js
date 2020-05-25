@@ -15,17 +15,7 @@ import WidgetChart from '../components/Video/WidgetChart';
 import ProgressTag from '../components/Video/ProgressTag';
 import { AppSwitch } from '@coreui/react';
 import poster from '../assets/img/brand/sygnet.svg';
-
-const emotionColors = [
-	'rgba(241, 196, 15, 0.9)', //amarillo | happy
-	'rgba(243, 156, 18,1.0)', // naranja | suprised
-	'rgba(192, 57, 43,1.0)', //rojo | angry
-	'rgba(46, 204, 113,1.0)', //verde claro | confused
-	'rgba(127, 140, 141,1.0)', //gris | calm
-	'rgba(52, 152, 219,1.0)', //azul | sad
-	'rgba(155, 89, 182,1.0)', //morado | fear
-	'rgba(22, 160, 133,1.0)' //verde | disguted
-];
+import emotionColors from '../util/emotionColors';
 // Card Chart 1
 const cardChartData1 = {
 	labels: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July' ],

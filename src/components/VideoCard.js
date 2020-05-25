@@ -33,7 +33,7 @@ const socialChartOpts = {
 };
 
 const VideoCard = (props) => {
-	console.log('[VideoCard.js]', props);
+	//console.log('[VideoCard.js]', props);
 
 	const data = {
 		labels: Array.from({ length: props.item.gestures.length }, (_, i) => (_ = i)),
@@ -50,7 +50,12 @@ const VideoCard = (props) => {
 	};
 
 	return (
-		<Widget duration={`${(props.item.general.duration / 60).toFixed(0)} : ${props.item.general.duration % 60}`} faces={props.item.general.gestures} color={props.item.general.emotion}>
+		<Widget
+			duration={`${(props.item.general.duration / 60).toFixed(0)} : ${props.item.general.duration % 60}`}
+			faces={props.item.general.gestures}
+			color={props.item.general.emotion}
+			id={props.item._id}
+		>
 			<div className="chart-wrapper">
 				<Line data={data} options={socialChartOpts} height={90} />
 			</div>

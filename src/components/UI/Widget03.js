@@ -59,7 +59,7 @@ const Widget03 = (props) => {
 				)}
 			</div>
 			<div className="text-muted card-footer">
-				<NavLink to="media/5" exact>
+				<NavLink to={`/media/${props.id}`} exact>
 					Go to video
 				</NavLink>
 			</div>
@@ -72,7 +72,8 @@ Widget03.propTypes = {
 	faces: PropTypes.number.isRequired,
 	//if this it is a video
 	duration: PropTypes.string,
-	color: PropTypes.string.isRequired
+	color: PropTypes.string.isRequired,
+	id: PropTypes.string.isRequired
 };
 
 export default Widget03;

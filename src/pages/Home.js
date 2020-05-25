@@ -17,8 +17,6 @@ const Home = () => {
 	const userToken = useContext(userContext).token;
 	const { data, isLoading /*loadData, searchByName, isSearching*/} = useFetch('/videos/' + userToken);
 
-	// 	.get('/videos/' + userToken + '/' + '"5ecb54b1849de04dd16ba634"')
-
 	return (
 		<div className="animated fadeIn">
 			<div style={{ marginTop: '50px' }} />

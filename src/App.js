@@ -17,12 +17,13 @@ import './App.scss';
 const App = () => {
 	const [ isAuth, setIsAuth ] = useState(true); //false
 	const [ token, setToken ] = useState(
-		"eyJhbGciOiJSUzI1NiIsImtpZCI6IjgyMmM1NDk4YTcwYjc0MjQ5NzI2ZDhmYjYxODlkZWI3NGMzNWM4MGEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZW1vdGlvbmZ5LW1lZGlhLTI3NzUxOSIsImF1ZCI6ImVtb3Rpb25meS1tZWRpYS0yNzc1MTkiLCJhdXRoX3RpbWUiOjE1OTAzOTg2MTAsInVzZXJfaWQiOiI5VWMxcWpkUDNpZzZLcjJFVDlUN1pYNTVXQzEyIiwic3ViIjoiOVVjMXFqZFAzaWc2S3IyRVQ5VDdaWDU1V0MxMiIsImlhdCI6MTU5MDM5ODYxMCwiZXhwIjoxNTkwNDAyMjEwLCJlbWFpbCI6InJnZy5jb3JyZW9AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInJnZy5jb3JyZW9AZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.OwbmKgR0zOcsDMYEl0xTi4awEwnoCwZiFAAyekE7BY_-VI8XSz-Q2DhmH50pSaY91NDi9GVyxLm5h7psKvFZGAxyUMAKdIbB_Aj77nBmQj-BOwa54rdz3oDTYyRGiUd-Hr3kv79Unkbss23L3mPrfle_UvRXqZGyTd0cWk5jWpo5Yd85bEPfrmgHs9tVAX8FyFt9YT_y66xKrnJqzkM19vVnreOWepcTptCetd9zGPi9UvLCRxUNYHoLj6mwh54v99lWRzMZjuWi7t5L-v8nYkg-8QGKM_vMHma8ulY8cka9KtUN6RGnE18Biy0UW7uzodb8nFIZlcJB3jnYzhdn6g"
+		"eyJhbGciOiJSUzI1NiIsImtpZCI6IjgyMmM1NDk4YTcwYjc0MjQ5NzI2ZDhmYjYxODlkZWI3NGMzNWM4MGEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZW1vdGlvbmZ5LW1lZGlhLTI3NzUxOSIsImF1ZCI6ImVtb3Rpb25meS1tZWRpYS0yNzc1MTkiLCJhdXRoX3RpbWUiOjE1OTA0NTA5NjksInVzZXJfaWQiOiI5VWMxcWpkUDNpZzZLcjJFVDlUN1pYNTVXQzEyIiwic3ViIjoiOVVjMXFqZFAzaWc2S3IyRVQ5VDdaWDU1V0MxMiIsImlhdCI6MTU5MDQ1MDk2OSwiZXhwIjoxNTkwNDU0NTY5LCJlbWFpbCI6InJnZy5jb3JyZW9AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInJnZy5jb3JyZW9AZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.Xpz7iJale2iWtv7RpBC7NGEJ6dGgODHGckL4ZD_CLiGj7WkIEAXj1Tan2NTxbsBArIA7O_4G7xdSpdgm9j9ATl_8jA7VvFOnrIlGliwR88w4lvTaI_Y9L9cfmXixJIHeG54dmV8ywzdZy3nezFZhARu3dx3N-2Vj-k5JUJgrIrXE-_UnavQT9yzLCc-nDCZBL1L1ZMX2QpP4x3ccIXRAjiBEUGV3durw8K31xS-foPpRQ9lUp5s5Cn1WRnPUte2xLkqjvAP_YUH54h_QmbPjWvUey5n4GSJLHP_xuhbdi4YbBdgfyYRtqgIvBwB3k3j9fV_Dthnp1P6QS65vi9OrSA"
 	); //
 	const [ refreshToken, setRefreshToken ] = useState(''	); // ''
 	const [ errorAuth, setErrorAuth ] = useState(false);
 	const [ isLoading, setisLoading ] = useState(false);
 	const [ isRefreshing, setIsRefreshing ] = useState(false);
+	const [ totalProjects, setTotalProjects ] = useState(0);
 
 	const createUser = (email, password) => {
 		setisLoading(true);
@@ -133,7 +134,9 @@ const App = () => {
 				clearError: setErrorAuth,
 				isLoading: isLoading,
 				refreshSession: refreshSession,
-				isRefreshing: isRefreshing
+				isRefreshing: isRefreshing,
+				totalProjects: totalProjects,
+				setTotalProjects: setTotalProjects
 			}}
 		>
 			<Router>

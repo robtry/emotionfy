@@ -22,11 +22,12 @@ const DefaultLayout = (props) => {
 
 	const signOut = useContext(userContext).logOut;
 	const isRefreshing = useContext(userContext).isRefreshing;
+	const totalProjects = useContext(userContext).totalProjects;
 
 	return (
 		<div className="app">
 			<AppHeader fixed>
-				<DefaultHeader onLogout={() => signOut()} />
+				<DefaultHeader onLogout={() => signOut()} total={totalProjects}/>
 			</AppHeader>
 			<div className="app-body">
 				<main className="main">

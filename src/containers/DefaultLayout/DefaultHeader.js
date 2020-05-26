@@ -51,7 +51,7 @@ class DefaultHeader extends Component {
 					</NavItem> */}
 					{/* <i className="fa fa-usd" /> Payments<Badge color="secondary">42</Badge> */}
 					<NavItem />
-					<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">42</Badge>
+					<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">{this.props.total}</Badge>
 				</Nav>
 				<Nav className="ml-auto" navbar>
 					<div className="little-searcher">

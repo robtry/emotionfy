@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Row, Col } from 'reactstrap';
 //owns
 import VideoCard from '../components/VideoCard';
@@ -15,16 +15,21 @@ import userContext from '../context/userContext';
 
 const Home = () => {
 	const userToken = useContext(userContext).token;
-	const { data, isLoading /*loadData, searchByName, isSearching*/} = useFetch('/videos/' + userToken);
+	const setProject = useContext(userContext).setTotalProjects;
+	const { data, isLoading /*loadData, searchByName, isSearching*/ } = useFetch('/videos/' + userToken);
+
+	useEffect(
+		() => {
+			setProject(data.length);
+		},
+		[ data, setProject ]
+	);
 
 	return (
 		<div className="animated fadeIn">
 			<div style={{ marginTop: '50px' }} />
 			<Row className="justify-content-center">
 				<span className="h1">Welcome to Emotionfy</span>
-			</Row>
-			<Row className="justify-content-center">
-				<p>Start uploading some image with faces there</p>
 			</Row>
 
 			<div style={{ marginTop: '50px' }} />
@@ -37,16 +42,17 @@ const Home = () => {
 			<div style={{ marginTop: '20px' }} />
 			{isLoading ? (
 				<Loader />
+			) : data.length === 0 ? (
+				<Row className="justify-content-center">
+					<p>Looks like you don't have any project yet. Start uploading some video with faces there.</p>
+				</Row>
 			) : (
 				<Row>
 					{data.map((item) => (
-						<Col xs={12} sm={6} md={3} key={item._id} >
+						<Col xs={12} sm={6} md={3} key={item._id}>
 							<VideoCard item={item} />
 						</Col>
 					))}
-					{/* <Col xs={12} sm={6} md={3}>
-						<ImageCard faces={1} />
-					</Col> */}
 				</Row>
 			)}
 		</div>

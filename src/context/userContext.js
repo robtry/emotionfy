@@ -9,6 +9,8 @@ export default React.createContext({
 	isRefreshing: false,
 	refreshSession: () => {},
 	clearError: () => {},
+	totalProjects: 0,
+	setTotalProjects: () => {},
 	logIn: (email, password) => {},
 	singUp: (email, password) => {},
 	logOut: (token) => {}

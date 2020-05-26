@@ -54,11 +54,11 @@ const mainChartOpts = {
 	}
 };
 
-
-
 const MainChart = (props) => {
 	//console.log('Mainchart.js', props.main);
-	const happy = {
+	const [ mainChart, setMainChart ] = useState({});
+
+	const [ happy, setHappy ] = useState({
 		label: 'Happy',
 		//backgroundColor: emotionColors[0],
 		backgroundColor: 'transparent',
@@ -66,16 +66,20 @@ const MainChart = (props) => {
 		pointHoverBackgroundColor: '#fff',
 		borderWidth: 3,
 		data: []
-	};
-	const surprised = {
+	});
+	const [ happyArray, setHappyArray ] = useState([]);
+
+	const [ surprised, setSurprised ] = useState({
 		label: 'Surprised',
 		backgroundColor: 'transparent',
 		borderColor: emotionColors[1],
 		pointHoverBackgroundColor: '#fff',
 		borderWidth: 3,
 		data: []
-	};
-	const angry = {
+	});
+	const [ surprisedArray, setSurprisedArray ] = useState([]);
+
+	const [ angry, setAngry ] = useState({
 		label: 'Angry',
 		backgroundColor: 'transparent',
 		borderColor: emotionColors[2],
@@ -83,72 +87,131 @@ const MainChart = (props) => {
 		borderWidth: 3,
 		//borderDash: [ 8, 5 ],
 		data: []
-	};
-	const confused = {
+	});
+	const [ angryArray, setAngryArray ] = useState([]);
+
+	const [ confused, setConfused ] = useState({
 		label: 'Confused',
 		backgroundColor: 'transparent',
 		borderColor: emotionColors[3],
 		pointHoverBackgroundColor: '#fff',
 		borderWidth: 3,
 		data: []
-	};
-	const calm = {
+	});
+	const [ confusedArray, setConfusedArray ] = useState([]);
+
+	const [ calm, setCalm ] = useState({
 		label: 'Calm',
 		backgroundColor: 'transparent',
 		borderColor: emotionColors[4],
 		pointHoverBackgroundColor: '#fff',
 		borderWidth: 3,
 		data: []
-	};
-	const sad = {
+	});
+	const [ calmArray, setCalmArray ] = useState([]);
+
+	const [ sad, setSad ] = useState({
 		label: 'Sad',
 		backgroundColor: 'transparent',
 		borderColor: emotionColors[5],
 		pointHoverBackgroundColor: '#fff',
 		borderWidth: 3,
 		data: []
-	};
-	const fear = {
+	});
+	const [ sadArray, setSadArray ] = useState([]);
+
+	const [ fear, setFear ] = useState({
 		label: 'Fear',
 		backgroundColor: 'transparent',
 		borderColor: emotionColors[6],
 		pointHoverBackgroundColor: '#fff',
 		borderWidth: 3,
 		data: []
-	};
-	const disgusted = {
+	});
+	const [ fearArray, setFearArray ] = useState([]);
+
+	const [ disgusted, setDisgusted ] = useState({
 		label: 'Disgusted',
 		backgroundColor: 'transparent',
 		borderColor: emotionColors[7],
 		pointHoverBackgroundColor: '#fff',
 		borderWidth: 3,
 		data: []
-	};
+	});
+	const [ disgustedArray, setDisgustedArray ] = useState([]);
 
+	//intialize all the graph
 	useEffect(
 		() => {
-			console.log('llenadnolos')
+			//console.log('llenadnolos');
 			let i;
+			const lhappyArray = [];
+			const lsurprisedArray = [];
+			const langryArray = [];
+			const lconfusedArray = [];
+			const lcalmArray = [];
+			const lsadArray = [];
+			const lfearArray = [];
+			const ldisgustedArray = [];
 			for (i = 0; i < props.main.length; i++) {
-				happy.data.push(props.main[i].happy);
-				surprised.data.push(props.main[i].surprised);
-				angry.data.push(props.main[i].angry);
-				confused.data.push(props.main[i].confused);
-				calm.data.push(props.main[i].calm);
-				sad.data.push(props.main[i].sad);
-				fear.data.push(props.main[i].fear);
-				disgusted.data.push(props.main[i].disgusted);
+				lhappyArray.push(props.main[i].happy);
+				lsurprisedArray.push(props.main[i].surprised);
+				langryArray.push(props.main[i].angry);
+				lconfusedArray.push(props.main[i].confused);
+				lcalmArray.push(props.main[i].calm);
+				lsadArray.push(props.main[i].sad);
+				lfearArray.push(props.main[i].fear);
+				ldisgustedArray.push(props.main[i].disgusted);
 			}
+
+			setHappyArray(lhappyArray);
+			setSurprisedArray(lsurprisedArray);
+			setAngryArray(langryArray);
+			setConfusedArray(lconfusedArray);
+			setCalmArray(lcalmArray);
+			setSadArray(lsadArray);
+			setFearArray(lfearArray);
+			setDisgustedArray(ldisgustedArray);
+
+			setHappy((prev) => {
+				return { ...prev, data: lhappyArray };
+			});
+			setSurprised((prev) => {
+				return { ...prev, data: lsurprisedArray };
+			});
+			setAngry((prev) => {
+				return { ...prev, data: langryArray };
+			});
+			setConfused((prev) => {
+				return { ...prev, data: lconfusedArray };
+			});
+			setCalm((prev) => {
+				return { ...prev, data: lcalmArray };
+			});
+			setSad((prev) => {
+				return { ...prev, data: lsadArray };
+			});
+			setFear((prev) => {
+				return { ...prev, data: lfearArray };
+			});
+			setDisgusted((prev) => {
+				return { ...prev, data: ldisgustedArray };
+			});
 		},
 		[ props.main ]
 	);
 
 	//console.log(happy, surprised, angry, confused, calm, sad, fear, disgusted)
-
-	const [ mainChart, setMainChart ] = useState({
-		labels: Array.from({ length: props.main.length }, (_, i) => (_ = i)),
-		datasets: [ happy, surprised, angry, confused, calm, sad, fear, disgusted ]
-	});
+	// listen for changes
+	useEffect(
+		() => {
+			setMainChart({
+				labels: Array.from({ length: props.main.length }, (_, i) => (_ = i)),
+				datasets: [ happy, surprised, angry, confused, calm, sad, fear, disgusted ]
+			});
+		},
+		[ happy, surprised, angry, confused, calm, sad, fear, disgusted, props.main ]
+	);
 
 	//controls
 	const [ showHappy, setShowHappy ] = useState(true);
@@ -162,24 +225,75 @@ const MainChart = (props) => {
 
 	useEffect(
 		() => {
-			if (!showHappy) {
-				setMainChart(prev => {
-					const copy = prev.datasets.filter(ds => ds.label !== 'Happy')
-					console.log('the copy', copy)
-					return {
-						...prev,
-						datasets: copy
-					}
-				})
-			} else {
-				console.log('dam again happy');
-				///setMainChart(mainChartOutside);
-			}
+			setHappy((prev) => {
+				return { ...prev, data: showHappy ? happyArray : [] };
+			});
 		},
-		[ showHappy ]
+		[ showHappy, happyArray ]
 	);
 
-	console.log(mainChart)
+	useEffect(
+		() => {
+			setSurprised((prev) => {
+				return { ...prev, data: showSurprised ? surprisedArray : [] };
+			});
+		},
+		[ showSurprised, surprisedArray ]
+	);
+
+	useEffect(
+		() => {
+			setAngry((prev) => {
+				return { ...prev, data: showAngry ? angryArray : [] };
+			});
+		},
+		[ showAngry, angryArray ]
+	);
+
+	useEffect(
+		() => {
+			setConfused((prev) => {
+				return { ...prev, data: showConfused ? confusedArray : [] };
+			});
+		},
+		[ showConfused, confusedArray ]
+	);
+
+	useEffect(
+		() => {
+			setCalm((prev) => {
+				return { ...prev, data: showCalm ? calmArray : [] };
+			});
+		},
+		[ showCalm, calmArray ]
+	);
+
+	useEffect(
+		() => {
+			setSad((prev) => {
+				return { ...prev, data: showSad ? sadArray : [] };
+			});
+		},
+		[ showSad, sadArray ]
+	);
+	useEffect(
+		() => {
+			setFear((prev) => {
+				return { ...prev, data: showFear ? fearArray : [] };
+			});
+		},
+		[ showFear, fearArray ]
+	);
+	useEffect(
+		() => {
+			setDisgusted((prev) => {
+				return { ...prev, data: showDisgusted ? disgustedArray : [] };
+			});
+		},
+		[ showDisgusted, disgustedArray ]
+	);
+
+	//console.log('Maincharrt', mainChart);
 
 	return (
 		<React.Fragment>

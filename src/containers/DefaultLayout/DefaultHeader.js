@@ -26,10 +26,6 @@ class DefaultHeader extends Component {
 		return (
 			<React.Fragment>
 				<div className="big-logo">
-					{/* <AppNavbarBrand
-						full={{ src: logo, width: 150, height: 80, alt: 'Emotionfy Logo' }}
-						minimized={{ src: sygnet, width: 30, height: 30, alt: 'Emotionfy Logo' }}
-					/> */}
 					<img src={logo} width={150} height={60} alt="logo" />
 				</div>
 
@@ -37,24 +33,23 @@ class DefaultHeader extends Component {
 					<img src={logo} width={100} height={50} alt="logo" />
 				</div>
 
-				<Nav className="d-sm-down-none" navbar>
-					<NavItem />
-					<NavItem className="px-3">
-						<NavLink to="/" className="nav-link">
-							<i className="fa fa-home" />&nbsp;&nbsp; Home
-						</NavLink>
+				<Nav navbar>
+					<NavItem className='nav-items-header'/>
+					<NavLink to="/" className="nav-link nav-items-header">
+						<i className="fa fa-home" />&nbsp;&nbsp; Home
+					</NavLink>
+					<NavItem className='nav-items-header'/>
+					<NavItem className='nav-items-header'>
+						<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">{this.props.total}</Badge>
 					</NavItem>
-					{/* <NavItem className="px-3">
-						<Link to="/users" className="nav-link">
-						Users
-						</Link>
-					</NavItem> */}
-					{/* <i className="fa fa-usd" /> Payments<Badge color="secondary">42</Badge> */}
-					<NavItem />
-					<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">{this.props.total}</Badge>
+					<NavItem className='nav-items-header'/>
+					<NavLink to="/my-emotionfycoins" className="nav-link">
+					<i className="fa fa-usd" />&nbsp;&nbsp;EmotionfyCoins&nbsp;<Badge color="success">14</Badge>
+					</NavLink>
 				</Nav>
+
 				<Nav className="ml-auto" navbar>
-					<div className="little-searcher">
+					<div className="big-logo">
 						<InputGroupAddon addonType="prepend">
 							<InputGroupText>
 								<i className="icon-magnifier" />
@@ -86,11 +81,13 @@ class DefaultHeader extends Component {
 					</UncontrolledDropdown>
 				</Nav>
 
-				<Badge pill color="danger">
-					5
-				</Badge>
+				<div className="big-logo">
+					<Badge pill color="danger">
+						5
+					</Badge>
+				</div>
 
-				<AppAsideToggler className="d-md-down-none" />
+				<AppAsideToggler className="big-logo" />
 			</React.Fragment>
 		);
 	}

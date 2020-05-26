@@ -3,6 +3,7 @@ import { FilePond } from 'react-filepond';
 import { Card, CardBody, CardHeader, Col, Row, Label, CustomInput, CardFooter, Button, Progress } from 'reactstrap';
 //import { AppSwitch } from '@coreui/react';
 //import PropTypes from 'prop-types';
+import CheckoutForm from './Payment/CheckoutForm';
 
 //own
 import Loader from './Loader';
@@ -23,7 +24,7 @@ const FileUploader = () => {
 	const [ files, setFiles ] = useState([]);
 	//const [ imgResult, setImageResult ] = useState();
 	// for budget
-	const [ duration, setDuration ] = useState(-1); //-1
+	const [ duration, setDuration ] = useState(300); //-1
 	const [ seconds, setSeconds ] = useState(1);
 	const [ budget, setBudget ] = useState(0);
 	/**
@@ -36,7 +37,7 @@ const FileUploader = () => {
 	 * save, | 5
 	 * complete | 6
 	*/
-	const [ status, setStatus ] = useState(0); //0
+	const [ status, setStatus ] = useState(1); //0
 	const [ idVideoTemp, setIdVideoTemp ] = useState('');
 
 	useEffect(
@@ -47,10 +48,6 @@ const FileUploader = () => {
 	);
 
 	const pond = useRef();
-
-	const handleInit = () => {
-		console.log('FilePond instance has initialised', pond);
-	};
 
 	const userToken = useContext(userContext).token;
 
@@ -145,7 +142,6 @@ const FileUploader = () => {
 						processFile(fieldName, file, metadata, load, error, progress, abort);
 					}
 				}}
-				oninit={() => handleInit}
 				onupdatefiles={(fileItems) => {
 					// Set currently active file objects to this.state
 					setFiles(fileItems.map((fileItem) => fileItem.file));
@@ -160,6 +156,9 @@ const FileUploader = () => {
 				<Col xs="12">
 					<Card>
 						<CardHeader>
+							<Row>
+								<CheckoutForm />
+							</Row>
 							<Row>
 								<Col xs={4}>
 									Analize each <b>{seconds}</b> seconds

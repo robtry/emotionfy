@@ -55,6 +55,7 @@ const VideoCard = (props) => {
 			faces={props.item.general.gestures}
 			color={props.item.general.emotion}
 			id={props.item._id}
+			url={props.item.general.link}
 		>
 			<div className="chart-wrapper">
 				<Line data={data} options={socialChartOpts} height={90} />

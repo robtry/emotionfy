@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import { Row, Col } from 'reactstrap';
 import emotionColors from '../../util/emotionColors';
-
+import ModalPlayer from '../ModalPlayer';
 /**
  * Este es parte del videocard
 */
@@ -42,7 +43,7 @@ const Widget03 = (props) => {
 
 	return (
 		<div className="brand-card">
-			<div className="brand-card-header" style={{backgroundColor: backColor}}>
+			<div className="brand-card-header" style={{ backgroundColor: backColor }}>
 				<i className={duration ? 'fa fa-film' : 'fa fa-image'} />
 				{children}
 			</div>
@@ -59,9 +60,16 @@ const Widget03 = (props) => {
 				)}
 			</div>
 			<div className="text-muted card-footer">
-				<NavLink to={`/media/${props.id}`} exact>
-					Go to video
-				</NavLink>
+				<Row>
+					<Col>
+						<NavLink to={`/media/${props.id}`} exact>
+							Analysis
+						</NavLink>
+					</Col>
+					<Col>
+						<ModalPlayer url={props.url} />
+					</Col>
+				</Row>
 			</div>
 		</div>
 	);
@@ -73,7 +81,8 @@ Widget03.propTypes = {
 	//if this it is a video
 	duration: PropTypes.string,
 	color: PropTypes.string.isRequired,
-	id: PropTypes.string.isRequired
+	id: PropTypes.string.isRequired,
+	url: PropTypes.string.isRequired
 };
 
 export default Widget03;

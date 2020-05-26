@@ -25,3 +25,10 @@
 .bg-happy {
 	background-color: rgba(241, 196, 15, 1.0);
 }
+
+.previewButton {
+	cursor: pointer;
+	&:hover{
+		text-decoration: underline;
+	}
+}

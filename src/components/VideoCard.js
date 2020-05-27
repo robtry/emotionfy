@@ -32,10 +32,12 @@ const socialChartOpts = {
 	}
 };
 
+/** This are the video cards / projects shown in home */
+
 const VideoCard = (props) => {
 	//console.log('[VideoCard.js]', props);
 
-	const data = {
+	const data = !props.isFree ? {
 		labels: Array.from({ length: props.item.gestures.length }, (_, i) => (_ = i)),
 		datasets: [
 			{
@@ -47,25 +49,39 @@ const VideoCard = (props) => {
 				label: 'Gestures in this frame'
 			}
 		]
-	};
+	} : {};
 
 	return (
+		<React.Fragment>
+		{props.isFree ? 
 		<Widget
+			duration={`${(props.item.metadata.duration / 60).toFixed(0)} : ${props.item.metadata.duration % 60}`}
+			faces={0}
+			color={'free'}
+			id={props.item._id}
+			url={props.item.metadata.bucket_link}
+			name={props.item.name}
+			isFree
+		/>
+		:<Widget
 			duration={`${(props.item.general.duration / 60).toFixed(0)} : ${props.item.general.duration % 60}`}
 			faces={props.item.general.gestures}
 			color={props.item.general.emotion}
 			id={props.item._id}
 			url={props.item.general.link}
-		>
+			name={props.item.general.name}
+			>
 			<div className="chart-wrapper">
 				<Line data={data} options={socialChartOpts} height={90} />
 			</div>
-		</Widget>
+		</Widget>}
+			</React.Fragment>
 	);
 };
 
 VideoCard.propTypes = {
-	item: PropTypes.object.isRequired
+	item: PropTypes.object.isRequired,
+	isFree: PropTypes.bool
 };
 
 export default VideoCard;

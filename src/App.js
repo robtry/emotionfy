@@ -20,29 +20,21 @@ import './App.scss';
 const App = () => {
 
 	const [ isAuth, setIsAuth ] = useState(false); //false
-	const [ token, setToken ] = useState(); //
 	const [ isCheckingAuth, setChekingAuth ] = useState(true);
-	const [ refreshToken, setRefreshToken ] = useState(); //
 	const [ errorAuth, setErrorAuth ] = useState(false);
 	const [ isLoading, setisLoading ] = useState(false);
-	const [ isRefreshing, setIsRefreshing ] = useState(false);
 	const [ totalProjects, setTotalProjects ] = useState(0);
 
 	const createUser = (email, password) => {
 		setisLoading(true);
 		setErrorAuth(false);
 		firebase.auth().createUserWithEmailAndPassword(email, password)
-			.then((res) => {
-				console.log('register',res);
-				setIsAuth(true);
-				setToken(res.data.idToken);
-				setRefreshToken(res.data.refreshToken);
+			.then(() => {
 				setisLoading(false);
 			})
 			.catch((err) => {
-				console.log(err);
-				console.log(err.response.data && err.response.data.error.message)
-				setErrorAuth(err.response.data.error.message);
+				//console.log(err);
+				setErrorAuth(err.code);
 				setisLoading(false);
 			});
 	};
@@ -51,60 +43,19 @@ const App = () => {
 		setisLoading(true);
 		setErrorAuth(false);
 		firebase.auth().signInWithEmailAndPassword(email, password)
-			.then((res) => {
-				console.log('login:', res);
-				setIsAuth(true);
-				setToken(res.user.xa);
-				setRefreshToken(res.user.refreshToken);
+			.then(() => {
 				setisLoading(false);
 			})
-			.catch((err) => {
-				console.log('login:',err);
-				console.log(err.response.data && err.response.data.error.message)
-				setErrorAuth(err.response.data.error.message);
+			.catch(() => {
+				setErrorAuth(true);
 				setisLoading(false);
 			});
 	};
 
 	const endSessionUser = () => {
-		firebase.auth().signOut()
-	.then(() => {
-			//setIsAuth(false);
-			//setToken();
-			//setRefreshToken();
-			console.log('bye')
-
-		}).catch(err => console.log(err))
+		firebase.auth().signOut();
 	};
 
-	const refreshSession = () => {
-		console.log('refreshing');
-		setIsRefreshing(true);
-		axios
-			.post(
-				'https://securetoken.googleapis.com/v1/token?key=AIzaSyDiUEuXMafgY-G4wMRlJC_bCZxK-CzbiKs',
-				{
-					grant_type: 'refresh_token',
-					refresh_token: refreshToken
-				},
-				{
-					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-				}
-			)
-			.then((res) => {
-				console.log('refreshSession', res);
-				setIsAuth(true);
-				setToken(res.data.idToken);
-				setRefreshToken(res.data.refreshToken);
-				//setIsRefreshing(false);
-			})
-			.catch((err) => {
-				console.log(err);
-				console.log(err.response.data.error);
-				setErrorAuth(err.response.data.error.message);
-				//setIsRefreshing(false);
-			});
-	};
 
 	useEffect(() => {
 		firebase.auth().onAuthStateChanged(setIsAuth);
@@ -115,7 +66,7 @@ const App = () => {
 		if(isAuth && isAuth.xa){
 			axios.defaults.headers.common['Authorization'] = `Bearer ${isAuth.xa}`;
 		}
-		if(isAuth && isAuth.xa || isAuth === null){
+		if((isAuth && isAuth.xa) || isAuth === null){
 			setChekingAuth(false);
 		}
 
@@ -125,12 +76,6 @@ const App = () => {
 		<UserContext.Provider
 			value={{
 				isAuth: isAuth,
-				//setAuth: setIsAuth,
-				token: token,
-
-				refreshToken: refreshToken,
-				isRefreshing: isRefreshing,
-				refreshSession: refreshSession,
 
 				errorInAuth: errorAuth,
 				clearError: setErrorAuth,

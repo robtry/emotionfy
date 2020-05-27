@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from 'react';
+import React, { useRef} from 'react';
 import { Progress, Row } from 'reactstrap';
 import {
 	Player,
@@ -15,13 +15,10 @@ import DonutChart from '../components/Video/DonutChart';
 import { useFetch } from '../util/useFetch';
 import poster from '../assets/img/brand/sygnet.svg';
 
-import userContext from '../context/userContext';
 import LittleCharts from '../components/Video/LittleCharts';
 
 const VideoDetails = (props) => {
-	//console.log('[VideoDetails.js]', props)
-
-	//const userToken = useContext(userContext).token;
+	//console.log('[VideoDetails.js]', props);
 	const { data, isLoading /*loadData, searchByName, isSearching*/ } = useFetch(
 		`/videos/${props.match.params.id}`
 	);
@@ -58,20 +55,20 @@ const VideoDetails = (props) => {
 							<div className="progress-group-header">
 								<i className="icon-arrow-down progress-group-icon" />
 								<span className="title">Min Age</span>
-								<span className="ml-auto font-weight-bold">12</span>
+				<span className="ml-auto font-weight-bold">{data.ages.min_age}</span>
 							</div>
 							<div className="progress-group-bars">
-								<Progress className="progress-xs" color="dark" value="12" />
+								<Progress className="progress-xs" color="dark" value={data.ages.min_age} />
 							</div>
 						</div>
 						<div className="progress-group">
 							<div className="progress-group-header">
 								<i className="icon-arrow-up progress-group-icon" />
 								<span className="title">Max Age</span>
-								<span className="ml-auto font-weight-bold">43</span>
+								<span className="ml-auto font-weight-bold">{data.ages.max_age}</span>
 							</div>
 							<div className="progress-group-bars">
-								<Progress className="progress-xs" color="dark" value="43" />
+								<Progress className="progress-xs" color="dark" value={data.ages.max_age} />
 							</div>
 						</div>
 

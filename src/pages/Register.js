@@ -46,7 +46,8 @@ const Register = () => {
 				{errorInAuth && (
 					<Row className="justify-content-center">
 						<Alert color="danger">
-							{errorInAuth === 'EMAIL_EXISTS' && (
+							<p>Something went wrong singing up</p>
+							{errorInAuth === "auth/email-already-in-use" && (
 								<p>
 									The email address is already in use by another account. Please&nbsp;
 									<NavLink className="alert-link" to="/login" exact>
@@ -54,7 +55,7 @@ const Register = () => {
 									</NavLink>
 								</p>
 							)}
-							{errorInAuth === 'TOO_MANY_ATTEMPTS_TRY_LATER' && (
+							{errorInAuth === 'auth/too-many-attemps-try-later' && (
 								<p>
 									We have blocked all requests from this device due to unusual activity. Try again
 									later.

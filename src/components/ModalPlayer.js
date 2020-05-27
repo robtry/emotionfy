@@ -23,7 +23,7 @@ const ModalWithPlayer = (props) => {
 				color="secondary"
 				onClick={toggle}
 			>
-				Preview
+				{props.text ? props.text : 'Preview'}
 			</p>
 			<Modal isOpen={modal} toggle={toggle}>
 				{/* <ModalHeader toggle={toggle}>Modal title</ModalHeader> */}
@@ -58,7 +58,8 @@ const ModalWithPlayer = (props) => {
 };
 
 ModalWithPlayer.propTypes = {
-	url: PropTypes.string.isRequired
+	url: PropTypes.string.isRequired,
+	text: PropTypes.string
 };
 
 export default ModalWithPlayer;

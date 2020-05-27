@@ -39,13 +39,13 @@ class DefaultHeader extends Component {
 						<i className="fa fa-home" />&nbsp;&nbsp; Home
 					</NavLink>
 					<NavItem className='nav-items-header'/>
-					<NavItem className='nav-items-header'>
+					<NavItem >
 						<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">{this.props.total}</Badge>
 					</NavItem>
-					<NavItem className='nav-items-header'/>
+					{/* <NavItem className='nav-items-header'/>
 					<NavLink to="/my-emotionfycoins" className="nav-link">
 					<i className="fa fa-usd" />&nbsp;&nbsp;EmotionfyCoins&nbsp;<Badge color="success">14</Badge>
-					</NavLink>
+					</NavLink> */}
 				</Nav>
 
 				<Nav className="ml-auto" navbar>

@@ -38,7 +38,7 @@ const Widget03 = (props) => {
 			backColor = emotionColors[7];
 			break;
 		default:
-			backColor = emotionColors[0];
+			backColor = 'rgba(34, 32, 0, 1.0)';
 	}
 
 	return (
@@ -48,10 +48,12 @@ const Widget03 = (props) => {
 				{children}
 			</div>
 			<div className="brand-card-body">
-				<div>
-					<div className="text-value">{faces}</div>
-					<div className="text-uppercase text-muted small">Gestures Analyzed</div>
-				</div>
+				{!props.isFree && (
+					<div>
+						<div className="text-value">{faces}</div>
+						<div className="text-uppercase text-muted small">Gestures Analyzed</div>
+					</div>
+				)}
 				{duration && (
 					<div>
 						<div className="text-value">{duration}</div>
@@ -59,17 +61,20 @@ const Widget03 = (props) => {
 					</div>
 				)}
 			</div>
+			<Row className="justify-content-center">
+				<p>{props.name}</p>
+			</Row>
 			<div className="text-muted card-footer">
-				<Row>
-					<Col>
+				<div className="brand-card-body">
+					<div>
 						<NavLink to={`/media/${props.id}`} exact>
 							Analysis
 						</NavLink>
-					</Col>
-					<Col>
+					</div>
+					<div>
 						<ModalPlayer url={props.url} />
-					</Col>
-				</Row>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
@@ -78,11 +83,15 @@ const Widget03 = (props) => {
 Widget03.propTypes = {
 	children: PropTypes.node,
 	faces: PropTypes.number.isRequired,
+
 	//if this it is a video
 	duration: PropTypes.string,
+
 	color: PropTypes.string.isRequired,
 	id: PropTypes.string.isRequired,
-	url: PropTypes.string.isRequired
+	url: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
+	isFree: PropTypes.bool
 };
 
 export default Widget03;

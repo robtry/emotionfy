@@ -1,6 +1,22 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { FilePond } from 'react-filepond';
-import { Card, CardBody, CardHeader, Col, Row, Label, CustomInput, CardFooter, Button, Progress } from 'reactstrap';
+import {
+	Card,
+	CardBody,
+	CardHeader,
+	Col,
+	Row,
+	Label,
+	CustomInput,
+	CardFooter,
+	Button,
+	Progress,
+	Nav,
+	NavItem,
+	Badge,
+	NavLink,
+	TabContent
+} from 'reactstrap';
 //import { AppSwitch } from '@coreui/react';
 //import PropTypes from 'prop-types';
 import CheckoutForm from './Payment/CheckoutForm';
@@ -153,23 +169,82 @@ const FileUploader = () => {
 		setFiles([]);
 	};
 
+	const [ tab, setTab ] = useState(1);
+
 	if (status === 0) {
 		return (
-			<FilePond
-				ref={(ref) => (pond.current = ref)}
-				files={files}
-				allowMultiple={false}
-				maxFiles={1}
-				server={{
-					process: (fieldName, file, metadata, load, error, progress, abort) => {
-						processFile(fieldName, file, metadata, load, error, progress, abort);
-					}
-				}}
-				onupdatefiles={(fileItems) => {
-					// Set currently active file objects to this.state
-					setFiles(fileItems.map((fileItem) => fileItem.file));
-				}}
-			/>
+			<React.Fragment>
+				<Nav tabs>
+					<NavItem>
+						<NavLink
+							active={tab === 1}
+							onClick={() => {
+								setTab(1);
+							}}
+						>
+							<i className="icon-social-youtube" />
+							<span className={tab === 1 ? '' : 'd-none'}> Video </span>
+							{'\u00A0'}
+							<Badge color="success">Premium</Badge>
+						</NavLink>
+					</NavItem>
+					{/* <NavItem>
+						<NavLink
+							active={tab === 2}
+							onClick={() => {
+								setTab(2)
+							}}
+						>
+							<i className="icon-picture" />
+							<span className={tab === 2 ? '' : 'd-none'}> Image Premium</span>
+							<Badge color="success">Premium</Badge>
+						</NavLink>
+					</NavItem> */}
+					<NavItem>
+						<NavLink
+							active={tab === 3}
+							onClick={() => {
+								setTab(3);
+							}}
+						>
+							<i className="icon-camrecorder" />
+							<span className={tab === 3 ? '' : 'd-none'}> Video</span>
+							{'\u00A0'}
+							<Badge color="primary">Free</Badge>
+						</NavLink>
+					</NavItem>
+					{/* <NavItem>
+						<NavLink
+							active={tab === 4}
+							onClick={() => {
+								setTab(4)
+							}}
+						>
+							<i className="icon-picture" />
+							<span className={tab === 4 ? '' : 'd-none'}> Image</span>
+							<Badge color="primary">Free</Badge>
+						</NavLink>
+					</NavItem> */}
+				</Nav>
+				<TabContent activeTab={tab}>
+					<br />
+					<FilePond
+						ref={(ref) => (pond.current = ref)}
+						files={files}
+						allowMultiple={false}
+						maxFiles={1}
+						server={{
+							process: (fieldName, file, metadata, load, error, progress, abort) => {
+								processFile(fieldName, file, metadata, load, error, progress, abort);
+							}
+						}}
+						onupdatefiles={(fileItems) => {
+							// Set currently active file objects to this.state
+							setFiles(fileItems.map((fileItem) => fileItem.file));
+						}}
+					/>
+				</TabContent>
+			</React.Fragment>
 		);
 	}
 
@@ -184,10 +259,19 @@ const FileUploader = () => {
 									<span className="h6">Frames to analyze: {Math.floor(duration / seconds)} </span>
 								</Col>
 								<Col xs={4}>
-									<CheckoutForm price={budget} images={Math.floor(duration / seconds)} video={idVideoTemp} />
-									{/* <Button block outline color="success" onClick={acceptVideo}>
-										Pay
-									</Button> */}
+									{tab === 1 || tab === 2 ? (
+										<CheckoutForm
+											price={budget}
+											images={Math.floor(duration / seconds)}
+											video={idVideoTemp}
+										/>
+									) : tab === 3 || tab === 4 ? (
+										<Button block outline color="success" onClick={acceptVideo}>
+											Analyze
+										</Button>
+									) : (
+										<p> What are you doing? </p>
+									)}
 								</Col>
 								<Col xs={4}>
 									<Button block outline color="danger" onClick={cancelVideo}>

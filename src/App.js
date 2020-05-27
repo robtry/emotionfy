@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import axios from 'axios'; //from axios for normas requests
+import axios from './util/axios'; //from axios for normas requests
+import firebase from './util/firebase';
 // own
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Landing from './pages/Landing';
+import Loader from './components/Loader';
 
 //import HomePage from './pages/Home';
 import DefaultLayout from './containers/DefaultLayout';
@@ -16,9 +18,11 @@ import UserContext from './context/userContext';
 import './App.scss';
 
 const App = () => {
+
 	const [ isAuth, setIsAuth ] = useState(false); //false
-	const [ token, setToken ] = useState(''); //
-	const [ refreshToken, setRefreshToken ] = useState(''); // ''
+	const [ token, setToken ] = useState(); //
+	const [ isCheckingAuth, setChekingAuth ] = useState(true);
+	const [ refreshToken, setRefreshToken ] = useState(); //
 	const [ errorAuth, setErrorAuth ] = useState(false);
 	const [ isLoading, setisLoading ] = useState(false);
 	const [ isRefreshing, setIsRefreshing ] = useState(false);
@@ -27,28 +31,17 @@ const App = () => {
 	const createUser = (email, password) => {
 		setisLoading(true);
 		setErrorAuth(false);
-		axios
-			.post(
-				'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDiUEuXMafgY-G4wMRlJC_bCZxK-CzbiKs',
-				{
-					email,
-					password,
-					returnSecureToken: true
-				},
-				{
-					headers: { 'Content-Type': 'application/json' }
-				}
-			)
+		firebase.auth().createUserWithEmailAndPassword(email, password)
 			.then((res) => {
-				//console.log('register',res);
+				console.log('register',res);
 				setIsAuth(true);
 				setToken(res.data.idToken);
 				setRefreshToken(res.data.refreshToken);
-
 				setisLoading(false);
 			})
 			.catch((err) => {
 				console.log(err);
+				console.log(err.response.data && err.response.data.error.message)
 				setErrorAuth(err.response.data.error.message);
 				setisLoading(false);
 			});
@@ -57,38 +50,31 @@ const App = () => {
 	const logIn = (email, password) => {
 		setisLoading(true);
 		setErrorAuth(false);
-		axios
-			.post(
-				'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDiUEuXMafgY-G4wMRlJC_bCZxK-CzbiKs',
-				{
-					email,
-					password,
-					returnSecureToken: true
-				},
-				{
-					headers: { 'Content-Type': 'application/json' }
-				}
-			)
+		firebase.auth().signInWithEmailAndPassword(email, password)
 			.then((res) => {
-				console.log('login', res);
+				console.log('login:', res);
 				setIsAuth(true);
-				setToken(res.data.idToken);
-				setRefreshToken(res.data.refreshToken);
+				setToken(res.user.xa);
+				setRefreshToken(res.user.refreshToken);
 				setisLoading(false);
 			})
 			.catch((err) => {
-				console.log(err);
-				//console.log('login',);
+				console.log('login:',err);
+				console.log(err.response.data && err.response.data.error.message)
 				setErrorAuth(err.response.data.error.message);
 				setisLoading(false);
 			});
 	};
 
-	const endSessionUser = (token) => {
-		console.log('terminando sesion', token);
-		setIsAuth(false);
-		setToken('');
-		setRefreshToken('');
+	const endSessionUser = () => {
+		firebase.auth().signOut()
+	.then(() => {
+			//setIsAuth(false);
+			//setToken();
+			//setRefreshToken();
+			console.log('bye')
+
+		}).catch(err => console.log(err))
 	};
 
 	const refreshSession = () => {
@@ -120,35 +106,59 @@ const App = () => {
 			});
 	};
 
+	useEffect(() => {
+		firebase.auth().onAuthStateChanged(setIsAuth);
+	}, []);
+	
+	useEffect( () => {
+		console.log('isAut now is',isAuth);
+		if(isAuth && isAuth.xa){
+			axios.defaults.headers.common['Authorization'] = `Bearer ${isAuth.xa}`;
+		}
+		if(isAuth && isAuth.xa || isAuth === null){
+			setChekingAuth(false);
+		}
+
+	},[isAuth])
+
 	return (
 		<UserContext.Provider
 			value={{
 				isAuth: isAuth,
-				logIn: logIn,
-				singUp: createUser,
-				logOut: endSessionUser,
+				//setAuth: setIsAuth,
 				token: token,
+
 				refreshToken: refreshToken,
+				isRefreshing: isRefreshing,
+				refreshSession: refreshSession,
+
 				errorInAuth: errorAuth,
 				clearError: setErrorAuth,
+
 				isLoading: isLoading,
-				refreshSession: refreshSession,
-				isRefreshing: isRefreshing,
+
 				totalProjects: totalProjects,
-				setTotalProjects: setTotalProjects
+				setTotalProjects: setTotalProjects,
+
+				logIn: logIn,
+				singUp: createUser,
+				logOut: endSessionUser
 			}}
 		>
-			<Router>
-				<Router>
+			{isCheckingAuth ? 
+			<div style={{marginTop: '25%'}}>
+				<Loader/>
+			</div>
+			
+			: <Router>
 					<Switch>
+						{!isAuth && <Route exact path="/" component={Landing} />}
 						{isAuth && <Route path="/" component={DefaultLayout} />}
-						<Route exact path="/" component={Landing} />
-						<Route exact path="/login/" component={Login} />
-						<Route exact path="/register" component={Register} />
-						{!isAuth && <Redirect to="/" />}
+						{!isAuth && <Route exact path="/login/" component={Login} />}
+						{!isAuth && <Route exact path="/register" component={Register} />}
+						{!isAuth && <Redirect to="/login" />}
 					</Switch>
-				</Router>
-			</Router>
+			</Router>}
 		</UserContext.Provider>
 	);
 };

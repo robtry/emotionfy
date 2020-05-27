@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Loader from '../components/Loader';
 import {
@@ -21,29 +21,16 @@ import userContext from '../context/userContext';
 import logo from '../assets/img/brand/logo.svg';
 
 const Login = () => {
-	const login = useContext(userContext).logIn;
-	const error = useContext(userContext).errorInAuth;
-	const isLoading = useContext(userContext).isLoading;
-	const token = useContext(userContext).token;
-	const clearError = useContext(userContext).clearError;
-	const history = useHistory();
+	const{ logIn, errorInAuth, isLoading, clearError }= useContext(userContext);
 	const { handleSubmit, register, errors } = useForm();
 
 	const onSubmitHandler = (data) => {
 		//console.log('Login', data);
-		login(data.email, data.password);
+		logIn(data.email, data.password);
 	};
 
-	useEffect(
-		() => {
-			if (!error && token.length > 0) {
-				history.replace('/');
-			}
-		},
-		[ error, history, token ]
-	);
-
 	useEffect(() => {
+		//clean when enter in this page
 		clearError(false);
 	}, [clearError]);
 
@@ -53,7 +40,7 @@ const Login = () => {
 				<Row className="justify-content-center">
 					<img src={logo} alt="emotionfy" />
 				</Row>
-				{error && (
+				{errorInAuth && (
 					<Row className="justify-content-center">
 						<Alert color="danger">
 							Something went wrong singin in. Please try again.
@@ -147,6 +134,7 @@ const Login = () => {
 												</Button>
 											</Col> */}
 											</Row>
+											<NavLink to="/register" exact className="text-muted">Sing up instead?</NavLink>
 										</Form>
 									</CardBody>
 								</Card>

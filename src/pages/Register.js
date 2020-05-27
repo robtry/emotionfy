@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
 	Button,
@@ -21,29 +21,17 @@ import userContext from '../context/userContext';
 import logo from '../assets/img/brand/logo.svg';
 
 const Register = () => {
-	const singup = useContext(userContext).singUp;
-	const error = useContext(userContext).errorInAuth;
-	const isLoading = useContext(userContext).isLoading;
-	const token = useContext(userContext).token;
-	const clearError = useContext(userContext).clearError;
-	const history = useHistory();
+	const{ singUp, errorInAuth, isLoading, clearError }= useContext(userContext);
 	const { handleSubmit, register, errors, watch } = useForm();
 
 	const onSubmitHandler = (data) => {
 		//console.log(data);
-		singup(data.email, data.password1);
+		singUp(data.email, data.password1);
 	};
 
-	useEffect(
-		() => {
-			if (!error && token.length > 0) {
-				history.replace('/');
-			}
-		},
-		[ error, history, token ]
-	);
 
 	useEffect(() => {
+		//clean when enter in this page
 		clearError(false);
 	}, [clearError]);
 
@@ -55,10 +43,10 @@ const Register = () => {
 				<Row className="justify-content-center">
 					<img src={logo} alt="emotionfy" />
 				</Row>
-				{error && (
+				{errorInAuth && (
 					<Row className="justify-content-center">
 						<Alert color="danger">
-							{error === 'EMAIL_EXISTS' && (
+							{errorInAuth === 'EMAIL_EXISTS' && (
 								<p>
 									The email address is already in use by another account. Please&nbsp;
 									<NavLink className="alert-link" to="/login" exact>
@@ -66,7 +54,7 @@ const Register = () => {
 									</NavLink>
 								</p>
 							)}
-							{error === 'TOO_MANY_ATTEMPTS_TRY_LATER' && (
+							{errorInAuth === 'TOO_MANY_ATTEMPTS_TRY_LATER' && (
 								<p>
 									We have blocked all requests from this device due to unusual activity. Try again
 									later.
@@ -177,6 +165,7 @@ const Register = () => {
 											Create Account
 										</Button>
 									</Form>
+									<NavLink to="/login" exact className="text-muted">Sing in instead?</NavLink>
 								</CardBody>
 								{/* <CardFooter className="p-4">
 								<Row>

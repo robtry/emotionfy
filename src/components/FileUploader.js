@@ -18,15 +18,31 @@ import userContext from '../context/userContext';
  * Este es el drag and drop
 */
 
-const price = 0.002;
+// const formatPrice = ({ amount, currency, quantity }) => {
+// 	const numberFormat = new Intl.NumberFormat('en-US', {
+// 		style: 'currency',
+// 		currency,
+// 		currencyDisplay: 'symbol'
+// 	});
+// 	const parts = numberFormat.formatToParts(amount);
+// 	let zeroDecimalCurrency = true;
+// 	for (let part of parts) {
+// 		if (part.type === 'decimal') {
+// 			zeroDecimalCurrency = false;
+// 		}
+// 	}
+// 	amount = zeroDecimalCurrency ? amount : amount / 100;
+// 	const total = quantity * amount;
+// 	return numberFormat.format(total);
+// };
 
 const FileUploader = () => {
 	const [ files, setFiles ] = useState([]);
 	//const [ imgResult, setImageResult ] = useState();
 	// for budget
-	const [ duration, setDuration ] = useState(300); //-1
+	const [ duration, setDuration ] = useState(-1); //-1
 	const [ seconds, setSeconds ] = useState(1);
-	const [ budget, setBudget ] = useState(0);
+	const [ budget, setBudget ] = useState('$0');
 	/**
 	 * Todas las etapas de subir un video
 	 * clean | 0
@@ -37,12 +53,19 @@ const FileUploader = () => {
 	 * save, | 5
 	 * complete | 6
 	*/
-	const [ status, setStatus ] = useState(1); //0
+	const [ status, setStatus ] = useState(0); //0
 	const [ idVideoTemp, setIdVideoTemp ] = useState('');
 
 	useEffect(
 		() => {
-			setBudget((Math.floor(duration / seconds) * price).toFixed(4));
+			setBudget((Math.floor(duration / seconds) * process.env.REACT_APP_BASE_PRICE).toFixed(2));
+			// setBudget(
+			// 	formatPrice({
+			// 		amount: process.env.REACT_APP_BASE_PRICE,
+			// 		currency: process.env.REACT_APP_CURRENCY,
+			// 		quantity: Math.floor(duration / seconds)
+			// 	})
+			// );
 		},
 		[ seconds, duration ]
 	);
@@ -157,16 +180,14 @@ const FileUploader = () => {
 					<Card>
 						<CardHeader>
 							<Row>
-								<CheckoutForm />
-							</Row>
-							<Row>
 								<Col xs={4}>
-									Analize each <b>{seconds}</b> seconds
+									<span className="h6">Frames to analyze: {Math.floor(duration / seconds)} </span>
 								</Col>
 								<Col xs={4}>
-									<Button block outline color="success" onClick={acceptVideo}>
-										Analyze
-									</Button>
+									<CheckoutForm price={budget} images={Math.floor(duration / seconds)} video={idVideoTemp} />
+									{/* <Button block outline color="success" onClick={acceptVideo}>
+										Pay
+									</Button> */}
 								</Col>
 								<Col xs={4}>
 									<Button block outline color="danger" onClick={cancelVideo}>
@@ -184,18 +205,18 @@ const FileUploader = () => {
 								id="exampleCustomRange"
 								name="customRange"
 								min={1}
-								max={Math.floor(duration / 3)}
-								value={seconds}
-								onChange={(e) => setSeconds(e.target.value)}
+								max={Math.floor(duration / 4) - 1}
+								value={Math.floor(duration / 4) - seconds}
+								onChange={(e) => setSeconds(Math.floor(duration / 4) - +e.target.value)}
 							/>
-							{Math.floor(duration / seconds) <= 3 && (
+							{Math.floor(duration / seconds) <= 4 && (
 								<b>Looking for less rate? You should try uploading images instead of videos</b>
 							)}
 						</CardBody>
 						<CardFooter>
-							<span className="h6">Frames to analyze: {Math.floor(duration / seconds)} </span>
+							Analize each <b>{seconds}</b> seconds
 							<br />
-							<span className="h5">Total: ${budget} USD</span>
+							<span className="h5">Total: {budget} USD</span>
 						</CardFooter>
 					</Card>
 				</Col>

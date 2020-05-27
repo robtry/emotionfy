@@ -9,14 +9,16 @@ import { useFetch } from '../util/useFetch';
 //context
 import userContext from '../context/userContext';
 
+
 /**
  * Cuando el usuario ya inicio sesión
 */
 
 const Home = () => {
-	const userToken = useContext(userContext).token;
+	//const userToken = useContext(userContext).token;
 	const setProject = useContext(userContext).setTotalProjects;
-	const { data, isLoading /*loadData, searchByName, isSearching*/ } = useFetch('/videos/' + userToken);
+	const { data, isLoading /*loadData, searchByName, isSearching*/ } = useFetch('/videos/');
+
 
 	useEffect(
 		() => {

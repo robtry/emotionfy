@@ -13,18 +13,7 @@ body{
     font-family: Arial, "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
-.emotionfy{
-    /* background-image: linear-gradient(to top, #30d0d088 0%, #33086796 100%), url('../img/emotions.jpg'); */
-    background-color: rgba(183, 0, 255, 0.438);
-    width: 100%;
-    height: 650px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    position: relative;
-    overflow: hidden;
-}
+
 
 .text-emotionfy{
     height: 500px;
@@ -52,7 +41,7 @@ body{
 }
 
 .button:hover{
-    background: hsl(207, 84%, 49%);
+    /* background: hsl(207, 84%, 49%); */
     color: #fff;
 }
 

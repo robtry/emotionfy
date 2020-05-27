@@ -21,9 +21,9 @@ import LittleCharts from '../components/Video/LittleCharts';
 const VideoDetails = (props) => {
 	//console.log('[VideoDetails.js]', props)
 
-	const userToken = useContext(userContext).token;
+	//const userToken = useContext(userContext).token;
 	const { data, isLoading /*loadData, searchByName, isSearching*/ } = useFetch(
-		`/videos/${userToken}/${props.match.params.id}`
+		`/videos/${props.match.params.id}`
 	);
 
 	const player = useRef();

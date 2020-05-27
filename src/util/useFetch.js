@@ -1,18 +1,18 @@
-import { useEffect, useState, useRef, useCallback, useContext } from 'react';
+import { useEffect, useState, useRef, useCallback, /*useContext*/ } from 'react';
 //import { useLocation /*useHistory*/ } from 'react-router-dom';
 import axios from './axios';
-import userContext from '../context/userContext';
+//import userContext from '../context/userContext';
 
 export const useFetch = (path) => {
+
+
 	//con useRef si el value cambia no causa un re-render
 	const isCurrent = useRef(true);
-	const refresh = useContext(userContext).refreshSession;
 
 	//data
 	const [ data, setData ] = useState([]);
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ isSearching, setIsSearching ] = useState(false);
-	const [ isValidToken, setIsValidToken ] = useState(true); //token expired
 	//const [ totalPages, setTotalPages ] = useState(0);
 
 	//location for pags
@@ -34,11 +34,11 @@ export const useFetch = (path) => {
 					}
 				})
 				.catch((err) => {
-					console.log('error getting', err);
-					//console.log(err.response.data.message)
-					if (err.response && err.response.data.message === 'auth/id-token-expired') {
-						setIsValidToken(false);
-					}
+					console.log('error getting', err, err.response);
+					//setAuth(false)
+					// if (err.response && err.response.data.message === 'auth/id-token-expired') {
+					// 	setIsValidToken(false);
+					// }
 				});
 		},
 		[ path ]
@@ -59,9 +59,9 @@ export const useFetch = (path) => {
 			})
 			.catch((err) => {
 				console.log('searchByName:', err);
-				if (err.response.data.error.message === 'Token expired') {
-					setIsValidToken(false);
-				}
+				// if (err.response.data.error.message === 'Token expired') {
+				// 	setIsValidToken(false);
+				// }
 			});
 	}, []);
 
@@ -95,14 +95,8 @@ export const useFetch = (path) => {
 	useEffect(
 		() => {
 			loadData();
-			// if (!isValidToken) {
-			// 	refresh();
-			// 	console.log('wtf')
-			// } else {
-			// 	loadData();
-			// }
 		},
-		[ isValidToken, loadData, refresh ]
+		[ loadData ]
 	);
 
 	// to avoid set state when it is gone
@@ -113,5 +107,5 @@ export const useFetch = (path) => {
 		};
 	}, []);
 
-	return { data, isLoading, loadData, searchByName, isSearching, isValidToken /*totalPages*/ };
+	return { data, isLoading, loadData, searchByName, isSearching /*totalPages*/ };
 };

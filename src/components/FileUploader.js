@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FilePond } from 'react-filepond';
 import {
 	Card,
@@ -26,9 +26,6 @@ import Loader from './Loader';
 import axios from '../util/axios';
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css'; //https://pqina.nl/filepond/docs/patterns/frameworks/react/
-
-//context
-import userContext from '../context/userContext';
 
 /**
  * Este es el drag and drop
@@ -88,8 +85,6 @@ const FileUploader = () => {
 
 	const pond = useRef();
 
-	const userToken = useContext(userContext).token;
-
 	const processFile = (fieldName, file, metadata, load, error, progress, abort) => {
 		// FormData is a Web API that creates a HTML <form> element.
 		const formData = new FormData();
@@ -100,7 +95,6 @@ const FileUploader = () => {
      * filename is reported to the server. Default filename is blob.
      */
 		formData.append('video', file, file.name.replace(/\s/g, ''));
-		formData.append('token', userToken);
 		//console.log('fd',formData);
 		//return;
 
@@ -153,9 +147,9 @@ const FileUploader = () => {
 	const acceptVideo = () => {
 		console.log('Accept');
 		axios
-			.post('/videos/' + idVideoTemp, { token: userToken, seconds: seconds })
+			.post('/videos/' + idVideoTemp, { seconds: seconds })
 			.then((res) => {
-				//console.log(res);
+				console.log(res);
 				setStatus(2);
 			})
 			.catch((err) => {

@@ -17,7 +17,7 @@ const Checkout = (props) => {
 			mode: 'payment',
 			lineItems: [ { price: process.env.REACT_APP_PRICE_ID, quantity: props.images } ],
 			clientReferenceId: props.video,
-			successUrl: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}&token=asdasd`,
+			successUrl: `${window.location.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
 			cancelUrl: `${window.location.origin}/canceled`
 		});
 		// If `redirectToCheckout` fails due to a browser or network

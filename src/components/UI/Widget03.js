@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import { Row, Col } from 'reactstrap';
+import { Row } from 'reactstrap';
 import emotionColors from '../../util/emotionColors';
 import ModalPlayer from '../ModalPlayer';
 /**
@@ -67,9 +67,15 @@ const Widget03 = (props) => {
 			<div className="text-muted card-footer">
 				<div className="brand-card-body">
 					<div>
-						<NavLink to={`/media/${props.id}`} exact>
-							Analysis
-						</NavLink>
+						{props.isFree ? (
+							<NavLink to={`/media/free/${props.id}`} exact>
+								Analysis
+							</NavLink>
+						) : (
+							<NavLink to={`/media/${props.id}`} exact>
+								Analysis
+							</NavLink>
+						)}
 					</div>
 					<div>
 						<ModalPlayer url={props.url} />

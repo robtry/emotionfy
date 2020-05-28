@@ -8,6 +8,7 @@ import Loader from '../../components/Loader';
 import Home from '../../pages/Home';
 import Page404 from '../../pages/Page404';
 import VideoDetails from '../../pages/VideoDetails';
+import VideoDetailsFree from '../../pages/VideoDetailsFree';
 
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
@@ -44,6 +45,7 @@ const DefaultLayout = (props) => {
 								<Route exact path="/" component={Home} />
 								<Route path="/success" component={Home} />
 								<Route exact path="/media/:id" component={VideoDetails} />
+								<Route exact path="/media/free/:id" component={VideoDetailsFree} />
 								<Route component={Page404} />
 							</Switch>
 						</Suspense>

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Progress, Row, Nav, NavItem, NavLink, TabContent, CustomInput } from 'reactstrap';
+import {  Row, Nav, NavItem, NavLink, TabContent, CustomInput,  } from 'reactstrap';
 import {
 	Player,
 	LoadingSpinner,
@@ -9,16 +9,12 @@ import {
 	PlaybackRateMenuButton
 } from 'video-react'; // https://video-react.js.org/components/player/
 // own
-import MainChart from '../components/Video/MainChart';
 import Loader from '../components/Loader';
-import DonutChart from '../components/Video/DonutChart';
 import { useFetch } from '../util/useFetch';
 import poster from '../assets/img/brand/sygnet.svg';
 
-import LittleCharts from '../components/Video/LittleCharts';
-
-const VideoDetails = (props) => {
-	//console.log('[VideoDetails.js]', props);
+const VideoDetailsFree = (props) => {
+	//console.log('[VideoDetailsFree.js]', props);
 	const { data, isLoading /*loadData, searchByName, isSearching*/ } = useFetch(`/videos/${props.match.params.id}`);
 
 	const player = useRef();
@@ -41,37 +37,6 @@ const VideoDetails = (props) => {
 						<Row className="justify-content-center">
 							<span className="h1">{data.name}</span>
 						</Row>
-
-						{/* general charts */}
-						<div style={{ marginTop: '30px' }} />
-						<LittleCharts
-							beards={data.beards}
-							sunglasses={data.sunglasses}
-							eyeglasses={data.eyeglasses}
-							smiles={data.smiles}
-						/>
-
-						{/* ages */}
-						<div className="progress-group mb-5">
-							<div className="progress-group-header">
-								<i className="icon-arrow-down progress-group-icon" />
-								<span className="title">Min Age</span>
-								<span className="ml-auto font-weight-bold">{data.ages.min_age}</span>
-							</div>
-							<div className="progress-group-bars">
-								<Progress className="progress-xs" color="dark" value={data.ages.min_age} />
-							</div>
-						</div>
-						<div className="progress-group">
-							<div className="progress-group-header">
-								<i className="icon-arrow-up progress-group-icon" />
-								<span className="title">Max Age</span>
-								<span className="ml-auto font-weight-bold">{data.ages.max_age}</span>
-							</div>
-							<div className="progress-group-bars">
-								<Progress className="progress-xs" color="dark" value={data.ages.max_age} />
-							</div>
-						</div>
 
 						{/* video player */}
 						<div style={{ marginTop: '40px' }} />
@@ -143,39 +108,6 @@ const VideoDetails = (props) => {
 							}}
 						/>
 
-						{/* main chart */}
-						<div style={{ marginTop: '40px' }} />
-						<MainChart player={player} main={data.main} setSeconds={setCurrentSecond} />
-
-						{/* pie chart */}
-						<div style={{ marginTop: '20px' }} />
-						<DonutChart data={data.counts} />
-
-						{/* genders */}
-						<div className="progress-group mb-5">
-							<div className="progress-group-header">
-								<i className="icon-user-female progress-group-icon" />
-								<span className="title">Female</span>
-								<span className="ml-auto font-weight-bold">{(data.females * 100).toFixed(0)}%</span>
-							</div>
-							<div className="progress-group-bars">
-								<Progress
-									className="progress-xs"
-									color="dark"
-									value={(data.females * 100).toFixed(0)}
-								/>
-							</div>
-						</div>
-						<div className="progress-group">
-							<div className="progress-group-header">
-								<i className="icon-user progress-group-icon" />
-								<span className="title">Male</span>
-								<span className="ml-auto font-weight-bold">{(data.males * 100).toFixed(0)}%</span>
-							</div>
-							<div className="progress-group-bars">
-								<Progress className="progress-xs" color="dark" value={(data.males * 100).toFixed(0)} />
-							</div>
-						</div>
 					</div>
 				)
 			)}
@@ -183,4 +115,4 @@ const VideoDetails = (props) => {
 	);
 };
 
-export default VideoDetails;
+export default VideoDetailsFree;

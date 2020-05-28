@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Row, Col } from 'reactstrap';
 import ModalPlayer from '../components/ModalPlayer';
 //owns

@@ -1,5 +1,5 @@
-import React, { useRef} from 'react';
-import { Progress, Row } from 'reactstrap';
+import React, { useRef, useState } from 'react';
+import { Progress, Row, Nav, NavItem, NavLink, TabContent, CustomInput, TabPane } from 'reactstrap';
 import {
 	Player,
 	LoadingSpinner,
@@ -19,12 +19,13 @@ import LittleCharts from '../components/Video/LittleCharts';
 
 const VideoDetails = (props) => {
 	//console.log('[VideoDetails.js]', props);
-	const { data, isLoading /*loadData, searchByName, isSearching*/ } = useFetch(
-		`/videos/${props.match.params.id}`
-	);
+	const { data, isLoading /*loadData, searchByName, isSearching*/ } = useFetch(`/videos/${props.match.params.id}`);
 
 	const player = useRef();
 	//player.current.actions.seek(20)
+
+	const [ currentShow, setCurrentShow ] = useState(1); //image 1  | video 2
+	const [ currentSecond, setCurrentSecond ] = useState(0);
 
 	return (
 		<React.Fragment>
@@ -55,7 +56,7 @@ const VideoDetails = (props) => {
 							<div className="progress-group-header">
 								<i className="icon-arrow-down progress-group-icon" />
 								<span className="title">Min Age</span>
-				<span className="ml-auto font-weight-bold">{data.ages.min_age}</span>
+								<span className="ml-auto font-weight-bold">{data.ages.min_age}</span>
 							</div>
 							<div className="progress-group-bars">
 								<Progress className="progress-xs" color="dark" value={data.ages.min_age} />
@@ -74,28 +75,77 @@ const VideoDetails = (props) => {
 
 						{/* video player */}
 						<div style={{ marginTop: '40px' }} />
-						<Row className="justify-content-center">
-							<Player
-								ref={(ref) => (player.current = ref)}
-								height={400}
-								fluid={false} //to disable full height
-								muted
-								playsInline
-								poster={poster}
-								src={data.link}
-							>
-								<LoadingSpinner />
-								<ControlBar>
-									<CurrentTimeDisplay order={4.1} />
-									<TimeDivider order={4.2} />
-									<PlaybackRateMenuButton rates={[ 2, 1, 0.5, 0.1 ]} order={7.1} />
-								</ControlBar>
-							</Player>
-						</Row>
+
+						<Nav tabs>
+							<NavItem>
+								<NavLink
+									active={currentShow === 1}
+									onClick={() => {
+										setCurrentShow(1);
+									}}
+								>
+									Video
+								</NavLink>
+							</NavItem>
+							<NavItem>
+								<NavLink
+									active={currentShow === 2}
+									onClick={() => {
+										setCurrentShow(2);
+									}}
+								>
+									Image
+								</NavLink>
+							</NavItem>
+						</Nav>
+						<TabContent activeTab={currentShow}>
+							<br />
+							<Row className="justify-content-center">
+								{currentShow === 2 ? (
+									<img src={data.links[currentSecond]} alt="current image" />
+								) : currentShow === 1 ? (
+									<Player
+										ref={(ref) => (player.current = ref)}
+										height={400}
+										fluid={false} //to disable full height
+										muted
+										playsInline
+										poster={poster}
+										src={data.link}
+									>
+										<LoadingSpinner />
+										<ControlBar>
+											<CurrentTimeDisplay order={4.1} />
+											<TimeDivider order={4.2} />
+											<PlaybackRateMenuButton rates={[ 2, 1, 0.5, 0.1 ]} order={7.1} />
+										</ControlBar>
+									</Player>
+								) : (
+									<p>Something wrong</p>
+								)}
+							</Row>
+							<br />
+						</TabContent>
+
+						<div style={{ marginTop: '40px' }} />
+						<CustomInput
+							type="range"
+							id="exampleCustomRange"
+							name="customRange"
+							min={0}
+							max={data.main.length - 1}
+							value={currentSecond}
+							onChange={(e) => {
+								setCurrentSecond(+e.target.value);
+								if (currentShow === 1) {
+									player.current.actions.seek(+e.target.value);
+								}
+							}}
+						/>
 
 						{/* main chart */}
 						<div style={{ marginTop: '40px' }} />
-						<MainChart player={player} main={data.main} />
+						<MainChart player={player} main={data.main} setSeconds={setCurrentSecond} />
 
 						{/* pie chart */}
 						<div style={{ marginTop: '20px' }} />

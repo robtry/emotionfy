@@ -310,8 +310,11 @@ const MainChart = (props) => {
 									getElementAtEvent={(e) => {
 										//console.log(e[0]._index); // index
 										if (e[0] && e[0]._index) {
-											props.player.current.actions.seek(e[0]._index);
-											props.player.current.actions.pause();
+											if(props.player.current){
+												props.player.current.actions.seek(e[0]._index);
+												props.player.current.actions.pause();
+											}
+											props.setSeconds(e[0]._index);
 										}
 									}}
 								/>
@@ -436,7 +439,8 @@ const MainChart = (props) => {
 
 MainChart.propTypes = {
 	player: PropTypes.any.isRequired,
-	main: PropTypes.array.isRequired
+	main: PropTypes.array.isRequired,
+	setSeconds: PropTypes.func.isRequired,
 };
 
-export default MainChart;
+export default React.memo(MainChart);

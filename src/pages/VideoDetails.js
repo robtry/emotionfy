@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Progress, Row, Nav, NavItem, NavLink, TabContent, CustomInput } from 'reactstrap';
 import {
 	Player,
@@ -26,6 +26,17 @@ const VideoDetails = (props) => {
 
 	const [ currentShow, setCurrentShow ] = useState(1); //image 1  | video 2
 	const [ currentSecond, setCurrentSecond ] = useState(0);
+
+	useEffect(
+		() => {
+			if (player.current && currentShow === 1) {
+				player.current.actions.play();
+				player.current.actions.seek(currentSecond);
+				player.current.actions.pause();
+			}
+		},
+		[ player, currentSecond, currentShow ]
+	);
 
 	return (
 		<React.Fragment>
@@ -101,12 +112,13 @@ const VideoDetails = (props) => {
 						<TabContent activeTab={currentShow}>
 							<br />
 							<Row className="justify-content-center">
-								{currentShow === 2 ? (
-									<img src={data.links[currentSecond]} alt="current frame" />
-								) : currentShow === 1 ? (
+								{currentShow === 2 && (
+									<img src={data.links[currentSecond]} alt="current frame" height={300} />
+								)}
+								<div style={currentShow === 2 ? { display: 'none' } : {}}>
 									<Player
 										ref={(ref) => (player.current = ref)}
-										height={400}
+										height={300}
 										fluid={false} //to disable full height
 										muted
 										playsInline
@@ -120,14 +132,12 @@ const VideoDetails = (props) => {
 											<PlaybackRateMenuButton rates={[ 2, 1, 0.5, 0.1 ]} order={7.1} />
 										</ControlBar>
 									</Player>
-								) : (
-									<p>Something wrong</p>
-								)}
+								</div>
 							</Row>
 							<br />
 						</TabContent>
 
-						<div style={{ marginTop: '40px' }} />
+						<div style={{ marginTop: '10px' }} />
 						<CustomInput
 							type="range"
 							id="exampleCustomRange"
@@ -144,7 +154,7 @@ const VideoDetails = (props) => {
 						/>
 
 						{/* main chart */}
-						<div style={{ marginTop: '40px' }} />
+						<div style={{ marginTop: '10px' }} />
 						<MainChart player={player} main={data.main} setSeconds={setCurrentSecond} />
 
 						{/* pie chart */}

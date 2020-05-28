@@ -64,7 +64,7 @@ const VideoCard = (props) => {
 			isFree
 		/>
 		:<Widget
-			duration={`${(props.item.general.duration / 60).toFixed(0)} : ${props.item.general.duration % 60}`}
+			duration={`${Math.floor(props.item.general.duration / 60).toFixed(0)} : ${props.item.general.duration % 60}`}
 			faces={props.item.general.gestures}
 			color={props.item.general.emotion}
 			id={props.item._id}

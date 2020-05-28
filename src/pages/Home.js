@@ -21,7 +21,11 @@ const Home = () => {
 
 	useEffect(
 		() => {
-			setProject(data.length);
+			
+				if(data.payed   && data.free){
+					setProject(data.payed.length + data.free.length);
+				} 
+			
 		},
 		[ data, setProject ]
 	);
@@ -34,7 +38,7 @@ const Home = () => {
 			</Row>
 			<Row className="justify-content-center">
 				<div>
-					<ModalPlayer url={'props.url'} text='Need help?'/>
+					<ModalPlayer url={'props.url'} text="Need help?" />
 				</div>
 			</Row>
 

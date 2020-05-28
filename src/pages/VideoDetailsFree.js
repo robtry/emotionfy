@@ -67,7 +67,7 @@ const VideoDetailsFree = (props) => {
 							<br />
 							<Row className="justify-content-center">
 								{currentShow === 2 ? (
-									<img src={data.links[currentSecond]} alt="current frame" />
+									<img src={data.images[currentSecond]} alt="current frame" />
 								) : currentShow === 1 ? (
 									<Player
 										ref={(ref) => (player.current = ref)}
@@ -98,7 +98,7 @@ const VideoDetailsFree = (props) => {
 							id="exampleCustomRange"
 							name="customRange"
 							min={0}
-							max={data.main.length - 1}
+							max={data.images.length - 1}
 							value={currentSecond}
 							onChange={(e) => {
 								setCurrentSecond(+e.target.value);

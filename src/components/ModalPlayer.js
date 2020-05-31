@@ -18,13 +18,9 @@ const ModalWithPlayer = (props) => {
 
 	return (
 		<div>
-			<p
-				className='previewButton'
-				color="secondary"
-				onClick={toggle}
-			>
-				{props.text ? props.text : 'Preview'}
-			</p>
+				{props.text ? props.text : 
+				<Button outline color="success" onClick={toggle}><i className='icon-eye'></i> </Button>}
+	
 			<Modal isOpen={modal} toggle={toggle}>
 				{/* <ModalHeader toggle={toggle}>Modal title</ModalHeader> */}
 				<ModalBody>

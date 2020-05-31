@@ -43,110 +43,107 @@ const Landing = () => {
 					<div className="price-header">
 						<div className="price">
 							<div className="dollar-sign">$</div>
-							10
-							<div className="per-month">/mo</div>
+							Free
+							<div className="per-month">/frame</div>
 						</div>
 						<div className="plan-name">Basic</div>
 					</div>
 					<div className="divider" />
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature A
+						Video Analysis
 					</div>
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature B
+						Image Analysis
+					</div>
+					<div className="feature">
+						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
+						6 emotions
+					</div>
+					<div className="feature">
+						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
+						0.61 accuracy
 					</div>
 					<div className="feature inactive">
 						<img src={require('../assets/img/icons/x-square.svg')} alt="check" />
-						Feature C
+						Graphs with interaction
 					</div>
 					<div className="feature inactive">
 						<img src={require('../assets/img/icons/x-square.svg')} alt="check" />
-						Feature D
+						Age ranges
 					</div>
 					<div className="feature inactive">
 						<img src={require('../assets/img/icons/x-square.svg')} alt="check" />
-						Feature E
+						Eyeglasses statistics
 					</div>
 					<div className="feature inactive">
 						<img src={require('../assets/img/icons/x-square.svg')} alt="check" />
-						Feature F
+						Sunglasses statistics
+					</div>
+					<div className="feature inactive">
+						<img src={require('../assets/img/icons/x-square.svg')} alt="check" />
+						Smiles statistics
+					</div>
+					<div className="feature inactive">
+						<img src={require('../assets/img/icons/x-square.svg')} alt="check" />
+						Beard statistics
 					</div>
 					<button className="cta">Start Today</button>
 				</div>
-				<div className="price-column popular">
-					<div className="most-popular">Most Popular</div>
-					<div className="price-header">
+
+				<div className="price-column">
+				<div className="price-header">
 						<div className="price">
 							<div className="dollar-sign">$</div>
-							20
-							<div className="per-month">/mo</div>
+							0.2
+							<div className="per-month">/frame</div>
 						</div>
 						<div className="plan-name">Professional</div>
 					</div>
 					<div className="divider" />
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature A
+						Video Analysis
 					</div>
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature B
+						Image Analysis
 					</div>
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature C
+						8 emotions
 					</div>
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature D
-					</div>
-					<div className="feature inactive">
-						<img src={require('../assets/img/icons/x-square.svg')} alt="check" />
-						Feature E
-					</div>
-					<div className="feature inactive">
-						<img src={require('../assets/img/icons/x-square.svg')} alt="check" />
-						Feature F
-					</div>
-					<button className="cta">Start Today</button>
-				</div>
-				<div className="price-column">
-					<div className="price-header">
-						<div className="price">
-							<div className="dollar-sign">$</div>
-							50
-							<div className="per-month">/mo</div>
-						</div>
-						<div className="plan-name">Enterprise</div>
-					</div>
-					<div className="divider" />
-					<div className="feature">
-						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature A
+						0.92 accuracy
 					</div>
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature B
+						Graphs with interaction
 					</div>
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature C
+						Age ranges
 					</div>
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature D
+						Eyeglasses statistics
 					</div>
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature E
+						Sunglasses statistics
 					</div>
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
-						Feature F
+						Smiles statistics
 					</div>
-					<button className="cta">Start Today</button>
+					<div className="feature">
+						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
+						Beard statistics
+					</div>
+					
+					{/* <button className="cta">Start Today</button> */}
 				</div>
 			</section>
 		</div>

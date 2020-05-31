@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import { Row } from 'reactstrap';
+import { Row, Button, Tooltip } from 'reactstrap';
 import emotionColors from '../../util/emotionColors';
 import ModalPlayer from '../ModalPlayer';
+import axios from '../../util/axios';
 /**
  * Este es parte del videocard
 */
 
 const Widget03 = (props) => {
 	const { children, duration, faces } = props;
+
+	const [ detailOpen, setDetailOpen ] = useState(false);
 
 	let backColor;
 	switch (props.color) {
@@ -64,21 +67,54 @@ const Widget03 = (props) => {
 			<Row className="justify-content-center">
 				<p>{props.name}</p>
 			</Row>
-			<div className="text-muted card-footer">
+			<div className="card-footer">
 				<div className="brand-card-body">
 					<div>
 						{props.isFree ? (
-							<NavLink to={`/media/free/${props.id}`} exact>
-								Analysis
+							<NavLink
+								className="btn btn-outline-primary"
+								id={'tooltip-analysis-' + props.id}
+								to={`/media/free/${props.id}`}
+								exact
+							>
+								<i className="icon-graph" />
 							</NavLink>
 						) : (
-							<NavLink to={`/media/${props.id}`} exact>
-								Analysis
+							<NavLink
+								className="btn btn-outline-primary"
+								id={'tooltip-analysis-' + props.id}
+								to={`/media/${props.id}`}
+								exact
+							>
+								<i className="icon-chart" />
 							</NavLink>
 						)}
+						<Tooltip
+							placement="right"
+							isOpen={detailOpen}
+							target={'tooltip-analysis-' + props.id}
+							toggle={() => setDetailOpen((prev) => !prev)}
+						>
+							Show results for {props.name}
+						</Tooltip>
 					</div>
 					<div>
 						<ModalPlayer url={props.url} />
+					</div>
+					<div>
+						<Button
+							outline
+							color="danger"
+							id={'tooltip-del-' + props.id}
+							onClick={() => {
+								axios.delete('/videos/' + props.id).then((res) => {
+									console.log(res);
+									props.refresh();
+								}).catch(console.log);
+							}}
+						>
+							<i className="icon-trash" />
+						</Button>
 					</div>
 				</div>
 			</div>
@@ -97,7 +133,10 @@ Widget03.propTypes = {
 	id: PropTypes.string.isRequired,
 	url: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
-	isFree: PropTypes.bool
+	isFree: PropTypes.bool,
+
+	//refresher
+	refresh: PropTypes.func.isRequired,
 };
 
 export default Widget03;

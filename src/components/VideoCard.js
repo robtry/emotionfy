@@ -37,50 +37,59 @@ const socialChartOpts = {
 const VideoCard = (props) => {
 	//console.log('[VideoCard.js]', props);
 
-	const data = !props.isFree ? {
-		labels: Array.from({ length: props.item.gestures.length }, (_, i) => (_ = i)),
-		datasets: [
-			{
-				backgroundColor: 'rgba(255,255,255,.1)',
-				borderColor: 'rgba(255,255,255,.55)',
-				pointHoverBackgroundColor: '#fff',
-				borderWidth: 2,
-				data: props.item.gestures,
-				label: 'Gestures in this frame'
+	const data = !props.isFree
+		? {
+				labels: Array.from({ length: props.item.gestures.length }, (_, i) => (_ = i)),
+				datasets: [
+					{
+						backgroundColor: 'rgba(255,255,255,.1)',
+						borderColor: 'rgba(255,255,255,.55)',
+						pointHoverBackgroundColor: '#fff',
+						borderWidth: 2,
+						data: props.item.gestures,
+						label: 'Gestures in this frame'
+					}
+				]
 			}
-		]
-	} : {};
+		: {};
 
 	return (
 		<React.Fragment>
-		{props.isFree ? 
-		<Widget
-			duration={`${(props.item.metadata.duration / 60).toFixed(0)} : ${props.item.metadata.duration % 60}`}
-			faces={0}
-			color={'free'}
-			id={props.item._id}
-			url={props.item.metadata.bucket_link}
-			name={props.item.name}
-			isFree
-		/>
-		:<Widget
-			duration={`${Math.floor(props.item.general.duration / 60).toFixed(0)} : ${props.item.general.duration % 60}`}
-			faces={props.item.general.gestures}
-			color={props.item.general.emotion}
-			id={props.item._id}
-			url={props.item.general.link}
-			name={props.item.general.name}
-			>
-			<div className="chart-wrapper">
-				<Line data={data} options={socialChartOpts} height={90} />
-			</div>
-		</Widget>}
-			</React.Fragment>
+			{props.isFree ? (
+				<Widget
+					duration={`${(props.item.metadata.duration / 60).toFixed(0)} : ${props.item.metadata.duration %
+						60}`}
+					faces={0}
+					color={'free'}
+					id={props.item._id}
+					url={props.item.metadata.bucket_link}
+					name={props.item.name}
+					isFree
+					refresh={props.refresh}
+				/>
+			) : (
+				<Widget
+					duration={`${Math.floor(props.item.general.duration / 60).toFixed(0)} : ${props.item.general
+						.duration % 60}`}
+					faces={props.item.general.gestures}
+					color={props.item.general.emotion}
+					id={props.item._id}
+					url={props.item.general.link}
+					name={props.item.general.name}
+					refresh={props.refresh}
+				>
+					<div className="chart-wrapper">
+						<Line data={data} options={socialChartOpts} height={90} />
+					</div>
+				</Widget>
+			)}
+		</React.Fragment>
 	);
 };
 
 VideoCard.propTypes = {
 	item: PropTypes.object.isRequired,
+	refresh: PropTypes.func.isRequired,
 	isFree: PropTypes.bool
 };
 

@@ -74,7 +74,7 @@ const VideoDetailsFree = (props) => {
 							<br />
 							<Row className="justify-content-center">
 								{currentShow === 2 ? (
-									<img src={data.images[currentSecond]} alt="current frame" />
+									<img src={data.images[currentSecond]} alt="current frame" height={500}/>
 								) : currentShow === 1 ? (
 									<Player
 										ref={(ref) => (player.current = ref)}

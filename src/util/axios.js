@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const instance = axios.create({
 	//baseURL: "/api",
-	//baseURL: 'http://localhost:5000/'
-	baseURL: 'https://fd950198f253.ngrok.io/',
+	baseURL: 'http://localhost:5000/'
+	//baseURL: 'https://fd950198f253.ngrok.io/',
 	//withCredentials: true,
 });
 

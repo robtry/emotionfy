@@ -17,7 +17,7 @@ import userContext from '../context/userContext';
 const Home = () => {
 	//const userToken = useContext(userContext).token;
 	const setProject = useContext(userContext).setTotalProjects;
-	const { data, isLoading, loadData, isError /*searchByName, isSearching*/ } = useFetch('/videos/');
+	const { data, isLoading, loadData, isError, simpleDelete /*searchByName, isSearching*/ } = useFetch('/videos/');
 
 	useEffect(
 		() => {
@@ -70,7 +70,7 @@ const Home = () => {
 						{data.payed &&
 							data.payed.map((item) => (
 								<Col xs={12} sm={6} md={3} key={item._id}>
-									<VideoCard item={item} refresh={loadData} />
+									<VideoCard item={item} refresh={loadData} simpleDelete={simpleDelete} />
 								</Col>
 							))}
 					</Row>
@@ -85,7 +85,7 @@ const Home = () => {
 								{data.free &&
 									data.free.map((item) => (
 										<Col xs={12} sm={6} md={3} key={item._id}>
-											<VideoCard item={item} isFree refresh={loadData} />
+											<VideoCard item={item} isFree refresh={loadData} simpleDelete={simpleDelete} />
 										</Col>
 									))}
 							</Row>

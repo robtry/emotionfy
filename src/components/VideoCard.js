@@ -66,6 +66,7 @@ const VideoCard = (props) => {
 					name={props.item.name}
 					isFree
 					refresh={props.refresh}
+					simpleDelete={props.simpleDelete}
 				/>
 			) : (
 				<Widget
@@ -77,6 +78,7 @@ const VideoCard = (props) => {
 					url={props.item.general.link}
 					name={props.item.general.name}
 					refresh={props.refresh}
+					simpleDelete={props.simpleDelete}
 				>
 					<div className="chart-wrapper">
 						<Line data={data} options={socialChartOpts} height={90} />
@@ -90,6 +92,7 @@ const VideoCard = (props) => {
 VideoCard.propTypes = {
 	item: PropTypes.object.isRequired,
 	refresh: PropTypes.func.isRequired,
+	simpleDelete: PropTypes.func.isRequired,
 	isFree: PropTypes.bool
 };
 

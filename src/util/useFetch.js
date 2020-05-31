@@ -1,11 +1,9 @@
-import { useEffect, useState, useRef, useCallback, /*useContext*/ } from 'react';
+import { useEffect, useState, useRef, useCallback /*useContext*/ } from 'react';
 //import { useLocation /*useHistory*/ } from 'react-router-dom';
 import axios from './axios';
 //import userContext from '../context/userContext';
 
 export const useFetch = (path) => {
-
-
 	//con useRef si el value cambia no causa un re-render
 	const isCurrent = useRef(true);
 
@@ -44,26 +42,47 @@ export const useFetch = (path) => {
 		[ path ]
 	);
 
-	const searchByName = useCallback((pathname, payload = {}) => {
-		//console.log('posting: ', pathname);
-		setIsSearching(true);
-		setIsLoading(true);
-		setIsError(false);
-		axios
-			.post(pathname, payload)
-			.then((res) => {
-				//console.log(res.data);
-				if (isCurrent.current) {
-					setData(res.data);
-					setIsLoading(false);
-					setIsError(false);
+	const simpleDelete = useCallback((id, type) => {
+		if (isCurrent.current) {
+			setData((prev) => {
+				let copier;
+				if (type === 'free') {
+					copier = prev.free.filter((item) => item._id !== id);
+					return {
+						...prev,
+						free: copier
+					};
+				} else {
+					copier = prev.payed.filter((item) => item._id !== id);
+					return {
+						...prev,
+						payed: copier
+					};
 				}
-			})
-			.catch((err) => {
-				console.log('searchByName error:', err);
-				setIsError(true);
 			});
+		}
 	}, []);
+
+	// const searchByName = useCallback((pathname, payload = {}) => {
+	// 	//console.log('posting: ', pathname);
+	// 	setIsSearching(true);
+	// 	setIsLoading(true);
+	// 	setIsError(false);
+	// 	axios
+	// 		.post(pathname, payload)
+	// 		.then((res) => {
+	// 			//console.log(res.data);
+	// 			if (isCurrent.current) {
+	// 				setData(res.data);
+	// 				setIsLoading(false);
+	// 				setIsError(false);
+	// 			}
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log('searchByName error:', err);
+	// 			setIsError(true);
+	// 		});
+	// }, []);
 
 	// const getTotalPages = useCallback(
 	// 	() => {
@@ -107,5 +126,5 @@ export const useFetch = (path) => {
 		};
 	}, []);
 
-	return { data, isLoading, loadData, searchByName, isSearching, isError /*totalPages*/ };
+	return { data, isLoading, loadData, /*searchByName,*/ isSearching, isError, simpleDelete /*totalPages*/ };
 };

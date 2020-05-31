@@ -26,9 +26,7 @@ class DefaultHeader extends Component {
 		return (
 			<React.Fragment>
 				<div className="big-logo">
-					<NavLink to="/" className="nav-link nav-items-header">
-						<img src={logo} width={150} height={60} alt="logo" />
-					</NavLink>
+					<img src={logo} width={150} height={60} alt="logo" />
 				</div>
 
 				<div className="little-logo">
@@ -40,10 +38,8 @@ class DefaultHeader extends Component {
 					<NavLink to="/" className="nav-link nav-items-header">
 						<i className="fa fa-home" />&nbsp;&nbsp; Home
 					</NavLink>
-					<NavItem className="nav-items-header" />
-					{/* <NavItem>
-						<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">{this.props.total}</Badge>
-					</NavItem> */}
+					{/* <NavItem className="nav-items-header" /> */}
+					
 					{/* <NavItem className='nav-items-header'/>
 					<NavLink to="/my-emotionfycoins" className="nav-link">
 					<i className="fa fa-usd" />&nbsp;&nbsp;EmotionfyCoins&nbsp;<Badge color="success">14</Badge>
@@ -51,17 +47,18 @@ class DefaultHeader extends Component {
 				</Nav>
 
 				<Nav className="ml-auto" navbar>
-					<NavItem>
-						<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">{this.props.total}</Badge>
-					</NavItem>
 					{/* <div className="big-logo">
-					<InputGroupAddon addonType="prepend">
+						<InputGroupAddon addonType="prepend">
 							<InputGroupText>
 								<i className="icon-magnifier" />
 							</InputGroupText>
 							<Input type="text" placeholder={'Search...'} />
-						</InputGroupAddon> 
-					</div> */}
+						</InputGroupAddon>
+					</div>
+					<NavItem /> */}
+					<NavItem>
+						<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">{this.props.total}</Badge>
+					</NavItem>
 					<NavItem />
 
 					<UncontrolledDropdown nav direction="down">

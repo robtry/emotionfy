@@ -117,13 +117,13 @@ const FileUploader = (props) => {
 	};
 
 	const acceptVideo = () => {
-		console.log('Accepting for free');
+		//console.log('Accepting for free');
+		setStatus(2);
 		axios
 			.post('/videos/' + idVideoTemp, { seconds: seconds })
 			.then((res) => {
 				console.log(res);
 				props.refresh();
-				setStatus(2);
 			})
 			.catch((err) => {
 				console.log(err);

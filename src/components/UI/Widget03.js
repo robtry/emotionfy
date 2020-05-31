@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import { Row, Button, Tooltip } from 'reactstrap';
+import { Row, Tooltip } from 'reactstrap';
 import emotionColors from '../../util/emotionColors';
 import ModalPlayer from '../ModalPlayer';
-import axios from '../../util/axios';
+import ModalDelete from './DeleteModal';
 /**
  * Este es parte del videocard
 */
@@ -102,19 +102,7 @@ const Widget03 = (props) => {
 						<ModalPlayer url={props.url} />
 					</div>
 					<div>
-						<Button
-							outline
-							color="danger"
-							id={'tooltip-del-' + props.id}
-							onClick={() => {
-								axios.delete('/videos/' + props.id).then((res) => {
-									console.log(res);
-									props.refresh();
-								}).catch(console.log);
-							}}
-						>
-							<i className="icon-trash" />
-						</Button>
+						<ModalDelete isFree={props.isFree} simpleDelete={props.simpleDelete} id={props.id} name={props.name}/>
 					</div>
 				</div>
 			</div>
@@ -137,6 +125,7 @@ Widget03.propTypes = {
 
 	//refresher
 	refresh: PropTypes.func.isRequired,
+	simpleDelete: PropTypes.func.isRequired
 };
 
 export default Widget03;

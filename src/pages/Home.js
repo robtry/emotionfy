@@ -17,7 +17,7 @@ import userContext from '../context/userContext';
 const Home = () => {
 	//const userToken = useContext(userContext).token;
 	const setProject = useContext(userContext).setTotalProjects;
-	const { data, isLoading, loadData /*searchByName, isSearching*/ } = useFetch('/videos/');
+	const { data, isLoading, loadData, isError /*searchByName, isSearching*/ } = useFetch('/videos/');
 
 	useEffect(
 		() => {
@@ -42,14 +42,23 @@ const Home = () => {
 
 			<div style={{ marginTop: '50px' }} />
 
-			{ !isLoading && <FileUploader refresh={loadData} pending={data.pending && data.pending.length >= 1 ? data.pending[0] : {}}/>}
+			{!isLoading && (
+				<FileUploader
+					refresh={loadData}
+					pending={data.pending && data.pending.length >= 1 ? data.pending[0] : {}}
+				/>
+			)}
 
 			<div style={{ marginTop: '80px' }} />
-			<Row className="justify-content-center">
+			{!isError && <Row className="justify-content-center">
 				<span className="h1">Your Projects</span>
-			</Row>
+			</Row>}
 			<div style={{ marginTop: '20px' }} />
-			{isLoading ? (
+			{isError ? (
+				<Row className="justify-content-center">
+					<p>Something went wrong while getting your projects, please try again</p>
+				</Row>
+			) : isLoading ? (
 				<Loader />
 			) : data.payed && data.payed.length === 0 && (data.free && data.free.length === 0) ? (
 				<Row className="justify-content-center">
@@ -61,7 +70,7 @@ const Home = () => {
 						{data.payed &&
 							data.payed.map((item) => (
 								<Col xs={12} sm={6} md={3} key={item._id}>
-									<VideoCard item={item} refresh={loadData}/>
+									<VideoCard item={item} refresh={loadData} />
 								</Col>
 							))}
 					</Row>
@@ -76,7 +85,7 @@ const Home = () => {
 								{data.free &&
 									data.free.map((item) => (
 										<Col xs={12} sm={6} md={3} key={item._id}>
-											<VideoCard item={item} isFree refresh={loadData}/>
+											<VideoCard item={item} isFree refresh={loadData} />
 										</Col>
 									))}
 							</Row>

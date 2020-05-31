@@ -97,10 +97,12 @@ const LittleCharts = (props) => {
 	return (
 		<Row>
 			<Col xs="12" sm="6" lg="3">
-				<WidgetChart type="dotted-curve" data={sunglasses} title="Sunglasses" />
+			{/* "dotted-curve" */}
+				<WidgetChart type="continue" data={sunglasses} title="Sunglasses" />
 			</Col>
 			<Col xs="12" sm="6" lg="3">
-				<WidgetChart type="dotted" data={eyeglasses} title="Eyeglasses" />
+			{/* dotted */}
+				<WidgetChart type="bars" data={eyeglasses} title="Eyeglasses" />
 			</Col>
 			<Col xs="12" sm="6" lg="3">
 				<WidgetChart type="continue" data={smiles} title="Smile" />

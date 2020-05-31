@@ -13,6 +13,7 @@ export const useFetch = (path) => {
 	const [ data, setData ] = useState([]);
 	const [ isLoading, setIsLoading ] = useState(false);
 	const [ isSearching, setIsSearching ] = useState(false);
+	const [ isError, setIsError ] = useState(false);
 	//const [ totalPages, setTotalPages ] = useState(0);
 
 	//location for pags
@@ -23,6 +24,7 @@ export const useFetch = (path) => {
 		() => {
 			setIsLoading(true);
 			setIsSearching(false);
+			setIsError(false);
 			axios
 				//.get(currentUrl + extra + (currentPage == null ? '1' : currentPage) + '/')
 				.get(path)
@@ -31,14 +33,12 @@ export const useFetch = (path) => {
 					if (isCurrent.current) {
 						setData(res.data);
 						setIsLoading(false);
+						setIsError(false);
 					}
 				})
 				.catch((err) => {
-					console.log('error getting', err, err.response);
-					//setAuth(false)
-					// if (err.response && err.response.data.message === 'auth/id-token-expired') {
-					// 	setIsValidToken(false);
-					// }
+					console.log('error loading data', err, err.response);
+					setIsError(true);
 				});
 		},
 		[ path ]
@@ -48,6 +48,7 @@ export const useFetch = (path) => {
 		//console.log('posting: ', pathname);
 		setIsSearching(true);
 		setIsLoading(true);
+		setIsError(false);
 		axios
 			.post(pathname, payload)
 			.then((res) => {
@@ -55,13 +56,12 @@ export const useFetch = (path) => {
 				if (isCurrent.current) {
 					setData(res.data);
 					setIsLoading(false);
+					setIsError(false);
 				}
 			})
 			.catch((err) => {
-				console.log('searchByName:', err);
-				// if (err.response.data.error.message === 'Token expired') {
-				// 	setIsValidToken(false);
-				// }
+				console.log('searchByName error:', err);
+				setIsError(true);
 			});
 	}, []);
 
@@ -107,5 +107,5 @@ export const useFetch = (path) => {
 		};
 	}, []);
 
-	return { data, isLoading, loadData, searchByName, isSearching /*totalPages*/ };
+	return { data, isLoading, loadData, searchByName, isSearching, isError /*totalPages*/ };
 };

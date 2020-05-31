@@ -34,12 +34,12 @@ class DefaultHeader extends Component {
 				</div>
 
 				<Nav navbar>
-					<NavItem className='nav-items-header'/>
+					<NavItem className="nav-items-header" />
 					<NavLink to="/" className="nav-link nav-items-header">
 						<i className="fa fa-home" />&nbsp;&nbsp; Home
 					</NavLink>
-					<NavItem className='nav-items-header'/>
-					<NavItem >
+					<NavItem className="nav-items-header" />
+					<NavItem>
 						<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">{this.props.total}</Badge>
 					</NavItem>
 					{/* <NavItem className='nav-items-header'/>
@@ -65,15 +65,15 @@ class DefaultHeader extends Component {
 						</DropdownToggle>
 						<DropdownMenu right>
 							<DropdownItem header tag="div" className="text-center">
-								<strong>Settings</strong>
+								<strong>{this.props.name}</strong>
 							</DropdownItem>
-							<DropdownItem>
+							{/* <DropdownItem>
 								<i className="fa fa-user" /> Profile
 							</DropdownItem>
 							<DropdownItem divider />
 							<DropdownItem>
 								<i className="fa fa-shield" /> Lock Account
-							</DropdownItem>
+							</DropdownItem> */}
 							<DropdownItem onClick={() => this.props.onLogout()}>
 								<i className="fa fa-lock" /> Logout
 							</DropdownItem>

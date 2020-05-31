@@ -2,6 +2,7 @@ import React from 'react';
 
 export default React.createContext({
 	isAuth: false,
+	email: '',
 
 	errorInAuth: false, // already exists, no exists, wrong pass
 	clearError: () => {},

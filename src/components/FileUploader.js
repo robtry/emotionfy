@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FilePond } from 'react-filepond';
+import { FilePond, registerPlugin } from 'react-filepond';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import PropTypes from 'prop-types';
 import {
 	Card,
@@ -15,18 +16,20 @@ import {
 	Nav,
 	NavItem,
 	Badge,
-	NavLink
+	NavLink,
+	Alert
 } from 'reactstrap';
 //import { AppSwitch } from '@coreui/react';
 //import PropTypes from 'prop-types';
 import CheckoutForm from './Payment/CheckoutForm';
 
 //own
-import Loader from './Loader';
+
 import axios from '../util/axios';
-import axiosClean from 'axios';
+
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css'; //https://pqina.nl/filepond/docs/patterns/frameworks/react/
+registerPlugin(FilePondPluginFileValidateType);
 
 /**
  * Este es el drag and drop
@@ -41,6 +44,8 @@ const FileUploader = (props) => {
 	); //-1
 	const [ seconds, setSeconds ] = useState(1);
 	const [ budget, setBudget ] = useState('$0');
+
+	const [ isError, setError ] = useState(false);
 	/**
 	 * Todas las etapas de subir un video
 	 * clean | 0
@@ -75,17 +80,9 @@ const FileUploader = (props) => {
 
 		formData.append('video', file, file.name.replace(/\s/g, ''));
 
-		//console.log('[FileUploader.js]',file);
-
-		// if filename does not match the required format.
-		// if (!FILE_NAME_REGEX.test(file.name)) {
-		// 	console.log('filename does not match!');
-		// 	error('Please use filenames in the following format: NAME_FLOOR_ETC');
-		// }
-
-
 		// the request itself
 		//return;
+		setError(false);
 		axios({
 			//headers: getCsrfHeader().headers,
 			method: 'post',
@@ -94,21 +91,18 @@ const FileUploader = (props) => {
 			onUploadProgress: (e) => {
 				// updating progress indicator
 				progress(e.lengthComputable, e.loaded, e.total);
-			},
+			}
 		})
 			.then((response) => {
-				// passing the file id to Filepond
 				console.log(response);
 				setIdVideoTemp(response.data.video_id);
 				setDuration(response.data.duration);
 				setStatus(1);
+				setSeconds(1);
 			})
 			.catch((err) => {
-				if (axios.isCancel(err)) {
-					console.log('Request canceled', err.message);
-				} else {
-					console.log('Error uploading', err);
-				}
+				console.log('Error uploading', err);
+				setError(true);
 			});
 
 		// Should expose an abort method so the request can be cancelled
@@ -117,6 +111,7 @@ const FileUploader = (props) => {
 			abort: () => {
 				console.log('aborting');
 				//source.cancel('Operation cancelled by the user.');
+				//abort();
 			}
 		};
 	};
@@ -148,6 +143,14 @@ const FileUploader = (props) => {
 	};
 
 	const [ tab, setTab ] = useState(1);
+
+	if (isError) {
+		return (
+			<Row className="justify-content-center">
+				<p>Something went wrong while uploading the video, please try again</p>
+			</Row>
+		);
+	}
 
 	if (status === 0 || status === 1) {
 		return (
@@ -215,7 +218,7 @@ const FileUploader = (props) => {
 									<Row>
 										<Col xs={4}>
 											<span className="h6">
-												Frames to analyze: {Math.floor(duration / seconds)}{' '}
+												Frames to analyze: {Math.floor(duration / seconds)}
 											</span>
 										</Col>
 										<Col xs={4}>
@@ -254,9 +257,21 @@ const FileUploader = (props) => {
 										onChange={(e) => setSeconds(Math.floor(duration / 4) - +e.target.value)}
 									/>
 									{Math.floor(duration / seconds) <= 4 && (
+										<Alert color="warning">
 										<b>Looking for less rate? You should try uploading images instead of videos</b>
+									</Alert>
 									)}
 								</CardBody>
+								{Math.floor(duration / 4) - 1 < 1 && (
+									<Alert color="warning">
+										Note: You can't adjust the rate to analyze, because the video is too short
+									</Alert>
+								)}
+								{(Math.floor(duration / 4) - 1) === seconds && (
+									<Alert color="warning">
+										Note: You this is the minimun available rate. If you need less try with images.
+									</Alert>
+								)}
 								<CardFooter>
 									Analize each <b>{seconds}</b> seconds
 									<br />
@@ -269,8 +284,13 @@ const FileUploader = (props) => {
 					<FilePond
 						ref={(ref) => (pond.current = ref)}
 						files={files}
+						allowFileTypeValidation={true}
+						acceptedFileTypes={[ 'video/mp4' ]}
+						fileValidateTypeLabelExpectedTypesMap={{ 'video/mp4': '.mp4' }}
+						fileValidateTypeLabelExpectedTypes="Must have to be an mp4"
 						allowMultiple={false}
 						maxFiles={1}
+						onprocessfileabort={(f) => console.log(f)}
 						server={{
 							process: (fieldName, file, metadata, load, error, progress, abort) => {
 								processFile(fieldName, file, metadata, load, error, progress, abort);

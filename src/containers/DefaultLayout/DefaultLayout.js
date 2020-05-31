@@ -17,16 +17,16 @@ import DefaultHeader from './DefaultHeader';
 //
 import userContext from '../../context/userContext';
 
-const DefaultLayout = (props) => {
+const DefaultLayout = () => {
 	//console.log('default layot props', props)
 	const loading = () => <Loader />;
 
-	const { isRefreshing, totalProjects, logOut } = useContext(userContext)
+	const { isRefreshing, totalProjects, logOut, email } = useContext(userContext);
 
 	return (
 		<div className="app">
 			<AppHeader fixed>
-				<DefaultHeader onLogout={logOut} total={totalProjects} />
+				<DefaultHeader onLogout={logOut} total={totalProjects} name={email} />
 			</AppHeader>
 			<div className="app-body">
 				<main className="main">
@@ -40,10 +40,13 @@ const DefaultLayout = (props) => {
 						)}
 						<Suspense fallback={loading()}>
 							<Switch>
-								<Redirect from='/login' to='/' />
-								<Redirect from='/register' to='/' />
+								<Redirect from="/login" to="/" />
+								<Redirect from="/register" to="/" />
+								<Redirect from="/success" to="/" />
+								<Redirect from="/cancel" to="/" />
 								<Route exact path="/" component={Home} />
-								<Route path="/success" component={Home} />
+								{/* <Route path="/success" component={Home} /> */}
+								{/* <Route path="/cancel" component={Home} /> */}
 								<Route exact path="/media/:id" component={VideoDetails} />
 								<Route exact path="/media/free/:id" component={VideoDetailsFree} />
 								<Route component={Page404} />

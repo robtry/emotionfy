@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {  Row, Nav, NavItem, NavLink, TabContent, CustomInput,  } from 'reactstrap';
+import { Row, Nav, NavItem, NavLink, TabContent, CustomInput } from 'reactstrap';
 import {
 	Player,
 	LoadingSpinner,
@@ -15,7 +15,9 @@ import poster from '../assets/img/brand/sygnet.svg';
 
 const VideoDetailsFree = (props) => {
 	//console.log('[VideoDetailsFree.js]', props);
-	const { data, isLoading /*loadData, searchByName, isSearching*/ } = useFetch(`/videos/${props.match.params.id}`);
+	const { data, isLoading, isError /*loadData, searchByName, isSearching*/ } = useFetch(
+		`/videos/${props.match.params.id}`
+	);
 
 	const player = useRef();
 	//player.current.actions.seek(20)
@@ -25,7 +27,12 @@ const VideoDetailsFree = (props) => {
 
 	return (
 		<React.Fragment>
-			{isLoading ? (
+			{isError ? (
+				<Row className="justify-content-center">
+					<div style={{ marginTop: '80px' }} />
+					<p>Something went wrong while getting your projects, please try again</p>
+				</Row>
+			) : isLoading ? (
 				<React.Fragment>
 					<div style={{ marginTop: '80px' }} />
 					<Loader />
@@ -107,7 +114,6 @@ const VideoDetailsFree = (props) => {
 								}
 							}}
 						/>
-
 					</div>
 				)
 			)}

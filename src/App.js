@@ -24,6 +24,7 @@ const App = () => {
 	const [ errorAuth, setErrorAuth ] = useState(false);
 	const [ isLoading, setisLoading ] = useState(false);
 	const [ totalProjects, setTotalProjects ] = useState(0);
+	const [email, setEmail] =  useState(0);
 
 	const createUser = (email, password) => {
 		setisLoading(true);
@@ -62,9 +63,10 @@ const App = () => {
 	}, []);
 	
 	useEffect( () => {
-		console.log('isAut now is',isAuth);
+		//console.log('isAut now is',isAuth);
 		if(isAuth && isAuth.xa){
 			axios.defaults.headers.common['Authorization'] = `Bearer ${isAuth.xa}`;
+			setEmail(isAuth.email);
 		}
 		if((isAuth && isAuth.xa) || isAuth === null){
 			setChekingAuth(false);
@@ -76,6 +78,7 @@ const App = () => {
 		<UserContext.Provider
 			value={{
 				isAuth: isAuth,
+				email: email,
 
 				errorInAuth: errorAuth,
 				clearError: setErrorAuth,

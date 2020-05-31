@@ -22,7 +22,7 @@ const Landing = () => {
 				<div className="text-emotionfy">
 					<img src={require('../assets/img/brand/logo.svg')} alt="logo" />
 					<p>
-						You can upload images or videos to be analyzed by a machine learning model and obtain the levels
+						You can upload videos to be analyzed by a machine learning model and obtain the levels
 						of emotions that are in each moment.
 					</p>
 					<NavLink to="/login" className="button">
@@ -53,10 +53,10 @@ const Landing = () => {
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
 						Video Analysis
 					</div>
-					<div className="feature">
+					{/* <div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
 						Image Analysis
-					</div>
+					</div> */}
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
 						6 emotions
@@ -106,10 +106,10 @@ const Landing = () => {
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
 						Video Analysis
 					</div>
-					<div className="feature">
+					{/* <div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
 						Image Analysis
-					</div>
+					</div> */}
 					<div className="feature">
 						<img src={require('../assets/img/icons/check-circle.svg')} alt="check" />
 						8 emotions

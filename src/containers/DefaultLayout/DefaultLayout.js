@@ -43,7 +43,7 @@ const DefaultLayout = () => {
 								<Redirect from="/login" to="/" />
 								<Redirect from="/register" to="/" />
 								<Redirect from="/success" to="/" />
-								<Redirect from="/cancel" to="/" />
+								<Redirect from="/canceled" to="/" />
 								<Route exact path="/" component={Home} />
 								{/* <Route path="/success" component={Home} /> */}
 								{/* <Route path="/cancel" component={Home} /> */}

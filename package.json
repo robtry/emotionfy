@@ -34,6 +34,7 @@
 		"react-videoplayer": "^0.6.4",
 		"reactstrap": "^8.0.0",
 		"simple-line-icons": "^2.4.1",
+		"socket.io-client": "^2.3.0",
 		"video-react": "^0.14.1"
 	},
 	"devDependencies": {

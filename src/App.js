@@ -24,7 +24,8 @@ const App = () => {
 	const [ errorAuth, setErrorAuth ] = useState(false);
 	const [ isLoading, setisLoading ] = useState(false);
 	const [ totalProjects, setTotalProjects ] = useState(0);
-	const [email, setEmail] =  useState(0);
+	const [email, setEmail] =  useState();
+	const [uid, setUID] = useState();
 
 	const createUser = (email, password) => {
 		setisLoading(true);
@@ -67,6 +68,10 @@ const App = () => {
 		if(isAuth && isAuth.xa){
 			axios.defaults.headers.common['Authorization'] = `Bearer ${isAuth.xa}`;
 			setEmail(isAuth.email);
+			setUID(isAuth.uid);
+		}else{
+			setEmail('');
+			setUID('');
 		}
 		if((isAuth && isAuth.xa) || isAuth === null){
 			setChekingAuth(false);
@@ -79,6 +84,7 @@ const App = () => {
 			value={{
 				isAuth: isAuth,
 				email: email,
+				uid: uid,
 
 				errorInAuth: errorAuth,
 				clearError: setErrorAuth,

@@ -12,15 +12,13 @@ import {
 	CustomInput,
 	CardFooter,
 	Button,
-	Progress,
 	Nav,
 	NavItem,
 	Badge,
 	NavLink,
-	Alert
+	Alert,
+	Progress
 } from 'reactstrap';
-//import { AppSwitch } from '@coreui/react';
-//import PropTypes from 'prop-types';
 import CheckoutForm from './Payment/CheckoutForm';
 
 //own
@@ -37,24 +35,17 @@ registerPlugin(FilePondPluginFileValidateType);
 
 const FileUploader = (props) => {
 	const [ files, setFiles ] = useState([]);
-	//const [ imgResult, setImageResult ] = useState();
+
 	// for budget
 	const [ duration, setDuration ] = useState(
 		Object.keys(props.pending).length > 0 ? props.pending.metadata.duration : -1
-	); //-1
+	);
 	const [ seconds, setSeconds ] = useState(1);
 	const [ budget, setBudget ] = useState('$0');
 
 	const [ isError, setError ] = useState(false);
-	/**
-	 * Todas las etapas de subir un video
-	 * clean | 0
-	 * uploaded, //retuns duration | 1
-	 * extract, | 2
-	 * process,| 3
-	 * save, | 4
-	 * complete | 5
-	*/
+	const [ isLoadingPay, setLoadingPay ] = useState(false);
+
 	const [ status, setStatus ] = useState(Object.keys(props.pending).length > 0 ? 1 : 0); //0
 	const [ idVideoTemp, setIdVideoTemp ] = useState(Object.keys(props.pending).length > 0 ? props.pending._id : '');
 
@@ -123,7 +114,7 @@ const FileUploader = (props) => {
 			.post('/videos/' + idVideoTemp, { seconds: seconds })
 			.then((res) => {
 				console.log(res);
-				props.refresh();
+				//props.refresh();
 			})
 			.catch((err) => {
 				console.log(err);
@@ -133,8 +124,8 @@ const FileUploader = (props) => {
 	const cancelVideo = () => {
 		axios
 			.delete('/videos/' + idVideoTemp)
-			.then((res) => {
-				console.log(res);
+			.then(() => {
+				//console.log(res);
 			})
 			.catch(console.log);
 		setDuration(-1);
@@ -227,6 +218,8 @@ const FileUploader = (props) => {
 													price={budget}
 													images={Math.floor(duration / seconds)}
 													video={idVideoTemp}
+													setLoading={setLoadingPay}
+													isLoading={isLoadingPay}
 												/>
 											) : tab === 3 || tab === 4 ? (
 												<Button block outline color="info" onClick={acceptVideo}>
@@ -237,7 +230,7 @@ const FileUploader = (props) => {
 											)}
 										</Col>
 										<Col xs={4}>
-											<Button block outline color="danger" onClick={cancelVideo}>
+											<Button block outline color="danger" onClick={cancelVideo} disabled={isLoadingPay}>
 												Cancel
 											</Button>
 										</Col>
@@ -306,50 +299,21 @@ const FileUploader = (props) => {
 		);
 	}
 
-	if (status >= 2) {
-		return (
-			<Progress multi>
-				{status >= 2 && (
-					<Progress
-						bar
-						animated={status === 2}
-						striped={status > 2}
-						color={status > 2 ? 'success' : 'info'}
-						value="33"
-					>
-						{status === 2 && 'Extracting'}
-					</Progress>
-				)}
+	//else status 2 , is loading something
+	return (<Progress
+		bar
+		animated
+		striped
+		color='info'
+		value="33"
+	>
+		Extracting
+	</Progress>)
 
-				{status >= 3 && (
-					<Progress
-						bar
-						animated={status === 3}
-						striped={status > 3}
-						color={status > 3 ? 'success' : 'info'}
-						value="33"
-					>
-						{status === 3 && 'Processing'}
-					</Progress>
-				)}
-				{status >= 4 && (
-					<Progress
-						bar
-						animated={status === 4}
-						striped={status > 4}
-						color={status > 4 ? 'success' : 'info'}
-						value="33"
-					>
-						{status === 4 && 'Saving'}
-					</Progress>
-				)}
-			</Progress>
-		);
-	}
 };
 
 FileUploader.propTypes = {
-	refresh: PropTypes.func.isRequired,
+	//refresh: PropTypes.func.isRequired,
 	pending: PropTypes.object.isRequired
 };
 

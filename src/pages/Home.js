@@ -12,8 +12,7 @@ import { useFetch } from '../util/useFetch';
 //context
 import userContext from '../context/userContext';
 
-//const SOCKETPORT = 'https://58f428dfe1a6.ngrok.io';
-const SOCKETPORT = '/api';
+const SOCKETPORT = process.env.REACT_APP_SOCKET_PORT;
 
 /**
  * Cuando el usuario ya inicio sesión
@@ -38,6 +37,9 @@ const Home = () => {
 		() => {
 			console.log('creating soket');
 			const socket = socketClient(SOCKETPORT);
+			socket.on('connect', _ => {
+				socket.emit('join', uid);
+			});
 			socket.on('status', (data) => {
 				const userInfo = JSON.parse(data);
 				if (userInfo.user === uid) {

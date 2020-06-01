@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-	baseURL: "/api",
-	//baseURL: 'http://localhost:5000/'
-	//baseURL: 'https://58f428dfe1a6.ngrok.io',
+	baseURL: process.env.REACT_APP_API_URI,
 	//withCredentials: true,
 });
 

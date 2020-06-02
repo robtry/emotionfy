@@ -36,31 +36,11 @@ const Home = () => {
 
 	useEffect(
 		() => {
-<<<<<<< Updated upstream
 			if (notification) {
 				const userInfo = JSON.parse(notification);
 				if (userInfo.status === 'complete') {
 					loadData();
 					//setProcessingVideos((prev) => {});
-=======
-			console.log('creating soket');
-			const socket = socketClient(SOCKETPORT, {
-				path: '/notifications'
-			});
-			socket.on('connect', _ => {
-				socket.emit('join', uid);
-			});
-			socket.on('status', (data) => {
-				const userInfo = JSON.parse(data);
-				if (userInfo.user === uid) {
-					console.log('for me', userInfo);
-					if (userInfo.status === 'complete') {
-						setProcessingVideos([]);
-						loadData();
-					} else {
-						setProcessingVideos([ userInfo ]);
-					}
->>>>>>> Stashed changes
 				}
 			}
 		},

@@ -13,6 +13,12 @@ export default React.createContext({
 	totalProjects: 0,
 	setTotalProjects: () => {},
 
+	totalProcess: 0,
+	setTotalProcess: () => {},
+
+	notification: '',
+	persistenNotification: [],
+
 	logIn: (email, password) => {},
 	singUp: (email, password) => {},
 	logOut: () => {}

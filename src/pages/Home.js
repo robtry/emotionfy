@@ -1,18 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Row, Col } from 'reactstrap';
-import socketClient from 'socket.io-client';
 //owns
 import ModalPlayer from '../components/ModalPlayer';
 import VideoCard from '../components/VideoCard';
 import FileUploader from '../components/FileUploader';
-import StatusBar from '../components/Video/StatusBar';
+
 //import ImageCard from '../components/UI/Widget03';
 import Loader from '../components/Loader';
 import { useFetch } from '../util/useFetch';
 //context
 import userContext from '../context/userContext';
-
-const SOCKETPORT = process.env.REACT_APP_SOCKET_PORT;
 
 /**
  * Cuando el usuario ya inicio sesión
@@ -20,7 +17,7 @@ const SOCKETPORT = process.env.REACT_APP_SOCKET_PORT;
 
 const Home = () => {
 	//const userToken = useContext(userContext).token;
-	const { setTotalProjects, uid } = useContext(userContext);
+	const { setTotalProjects, setTotalProcess, notification } = useContext(userContext);
 	const { data, isLoading, loadData, isError, simpleDelete /*searchByName, isSearching*/ } = useFetch('/videos/');
 
 	useEffect(
@@ -28,32 +25,26 @@ const Home = () => {
 			if (data.payed && data.free) {
 				setTotalProjects(data.payed.length + data.free.length);
 			}
+			if (data.processing) {
+				setTotalProcess(Object.keys(data.processing).length);
+			} else {
+				setTotalProcess(0);
+			}
 		},
-		[ data, setTotalProjects ]
+		[ data, setTotalProjects, setTotalProcess ]
 	);
 
-	const [ processingVideo, setProcessingVideos ] = useState([]);
 	useEffect(
 		() => {
-			console.log('creating soket');
-			const socket = socketClient(SOCKETPORT);
-			socket.on('connect', _ => {
-				socket.emit('join', uid);
-			});
-			socket.on('status', (data) => {
-				const userInfo = JSON.parse(data);
-				if (userInfo.user === uid) {
-					console.log('for me', userInfo);
-					if (userInfo.status === 'complete') {
-						setProcessingVideos([]);
-						loadData();
-					} else {
-						setProcessingVideos([ userInfo ]);
-					}
+			if (notification) {
+				const userInfo = JSON.parse(notification);
+				if (userInfo.status === 'complete') {
+					loadData();
+					//setProcessingVideos((prev) => {});
 				}
-			});
+			}
 		},
-		[ setProcessingVideos, uid, loadData ]
+		[ notification, loadData ]
 	);
 
 	return (
@@ -70,15 +61,12 @@ const Home = () => {
 
 			<div style={{ marginTop: '50px' }} />
 
-			{processingVideo.length > 0 ? (
-				processingVideo.map((item, index) => <StatusBar refresh={loadData} queue={item} key={index} />)
-			) : (
-				!isLoading && (
-					<FileUploader
-						//refresh={loadData}
-						pending={data.pending && data.pending.length >= 1 ? data.pending[0] : {}}
-					/>
-				)
+			{!isLoading && (
+				<FileUploader
+					//refresh={loadData}
+					pending={data.pending && data.pending.length >= 1 ? data.pending[0] : {}}
+					setTotalProcess={setTotalProcess}
+				/>
 			)}
 
 			<div style={{ marginTop: '80px' }} />

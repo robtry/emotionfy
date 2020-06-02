@@ -109,11 +109,15 @@ const FileUploader = (props) => {
 
 	const acceptVideo = () => {
 		//console.log('Accepting for free');
-		setStatus(2);
+		//setStatus(2);
+		props.setTotalProcess(prev => prev + 1);
+		setStatus(0);
+		setDuration(-1);
+		setFiles([]);
 		axios
 			.post('/videos/' + idVideoTemp, { seconds: seconds })
 			.then((res) => {
-				console.log(res);
+				//console.log(res);
 				//props.refresh();
 			})
 			.catch((err) => {
@@ -314,7 +318,8 @@ const FileUploader = (props) => {
 
 FileUploader.propTypes = {
 	//refresh: PropTypes.func.isRequired,
-	pending: PropTypes.object.isRequired
+	pending: PropTypes.object.isRequired,
+	setTotalProcess: PropTypes.func.isRequired,
 };
 
 export default FileUploader;

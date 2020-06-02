@@ -9,6 +9,7 @@ import Home from '../../pages/Home';
 import Page404 from '../../pages/Page404';
 import VideoDetails from '../../pages/VideoDetails';
 import VideoDetailsFree from '../../pages/VideoDetailsFree';
+import Processing from '../../pages/Processing';
 
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
@@ -21,12 +22,12 @@ const DefaultLayout = () => {
 	//console.log('default layot props', props)
 	const loading = () => <Loader />;
 
-	const { isRefreshing, totalProjects, logOut, email } = useContext(userContext);
+	const { isRefreshing, totalProjects, logOut, email, totalProcess, persistenNotification } = useContext(userContext);
 
 	return (
 		<div className="app">
 			<AppHeader fixed>
-				<DefaultHeader onLogout={logOut} total={totalProjects} name={email} />
+				<DefaultHeader onLogout={logOut} total={totalProjects} name={email} totalp={totalProcess} notifications={persistenNotification}/>
 			</AppHeader>
 			<div className="app-body">
 				<main className="main">
@@ -49,13 +50,14 @@ const DefaultLayout = () => {
 								{/* <Route path="/cancel" component={Home} /> */}
 								<Route exact path="/media/:id" component={VideoDetails} />
 								<Route exact path="/media/free/:id" component={VideoDetailsFree} />
+								<Route extac path="/processing/" component={Processing}/>
 								<Route component={Page404} />
 							</Switch>
 						</Suspense>
 					</Container>
 				</main>
 				<AppAside fixed>
-					<DefaultAside />
+					<DefaultAside notifications={persistenNotification}/>
 				</AppAside>
 			</div>
 			<AppFooter>

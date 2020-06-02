@@ -7,7 +7,7 @@ import {
 	DropdownMenu,
 	DropdownToggle,
 	Nav,
-	NavItem,
+	NavItem
 	// InputGroupAddon,
 	// InputGroupText,
 	// Input
@@ -39,7 +39,7 @@ class DefaultHeader extends Component {
 						<i className="fa fa-home" />&nbsp;&nbsp; Home
 					</NavLink>
 					{/* <NavItem className="nav-items-header" /> */}
-					
+
 					{/* <NavItem className='nav-items-header'/>
 					<NavLink to="/my-emotionfycoins" className="nav-link">
 					<i className="fa fa-usd" />&nbsp;&nbsp;EmotionfyCoins&nbsp;<Badge color="success">14</Badge>
@@ -56,10 +56,14 @@ class DefaultHeader extends Component {
 						</InputGroupAddon>
 					</div>
 					<NavItem /> */}
-					<NavItem>
+					<NavLink className="nav-items-header nav-link" to="/">
 						<i className="fa fa-file" />&nbsp;&nbsp;Projects&nbsp;<Badge color="primary">{this.props.total}</Badge>
-					</NavItem>
+					</NavLink>
 					<NavItem />
+
+					<NavLink to="/processing" className="nav-link">
+						<i className="fa fa-file" />&nbsp;&nbsp;Processing&nbsp;<Badge color="success">{this.props.totalp}</Badge>
+					</NavLink>
 
 					<UncontrolledDropdown nav direction="down">
 						<DropdownToggle nav>
@@ -85,7 +89,7 @@ class DefaultHeader extends Component {
 
 				<div className="big-logo">
 					<Badge pill color="danger">
-						5
+						{this.props.notifications.length}
 					</Badge>
 				</div>
 

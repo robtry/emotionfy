@@ -35,7 +35,7 @@ const StatusBar = (props) => {
 	}, [props, setStatus])
 
 	return (
-		<Progress multi>
+		<Progress multi style={{width: '100%'}}>
 			{status >= 1 && (
 				<Progress
 					bar

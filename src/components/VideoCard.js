@@ -57,7 +57,7 @@ const VideoCard = (props) => {
 		<React.Fragment>
 			{props.isFree ? (
 				<Widget
-					duration={`${(props.item.metadata.duration / 60).toFixed(0)} : ${props.item.metadata.duration %
+					duration={`${Math.floor(props.item.metadata.duration / 60).toFixed(0)} : ${props.item.metadata.duration %
 						60}`}
 					faces={0}
 					color={'free'}

@@ -26,6 +26,7 @@ const ModalExample = (props) => {
 									//props.refresh();
 								})
 								.catch(console.log);
+								toggle();
 						}}
 					>
 						Yes, delete

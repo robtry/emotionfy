@@ -18,7 +18,8 @@ import UserContext from './context/userContext';
 // styles
 import './App.scss';
 
-const SOCKETPORT = process.env.REACT_APP_SOCKET_PORT;
+const SOCKET_PORT = process.env.REACT_APP_SOCKET_PORT;
+const SOCKET_PATH = process.env.REACT_APP_SOCKET_PATH;
 
 const App = () => {
 	const [ isAuth, setIsAuth ] = useState(false); //false
@@ -37,7 +38,9 @@ const App = () => {
 		() => {
 			if (uid) {
 				console.log('creating soket');
-				const socket = socketClient(SOCKETPORT);
+				const socket = socketClient(SOCKET_PORT, {
+					path: SOCKET_PATH
+				});
 				socket.on('connect', (_) => {
 					socket.emit('join', uid);
 				});
@@ -154,6 +157,8 @@ const App = () => {
 						{!isAuth && <Route exact path="/login/" component={Login} />}
 						{!isAuth && <Route exact path="/register" component={Register} />}
 						{!isAuth && <Redirect to="/login" />}
+						<Redirect from="/success" to="/" />
+						<Redirect from="/cancel" to="/" />
 					</Switch>
 				</Router>
 			)}
